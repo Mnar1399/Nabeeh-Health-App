@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#5C0F22" />
+  <title>نبيه | تحقق من المعلومة الصحية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" data-page="home" aria-label="نبيه - الرئيسية">
+        <span class="brand-mark">ن</span>
+        <span><strong>نبيه</strong><small>صحتك تبدأ من المعلومة</small></span>
+      </a>
+      <nav class="main-nav" aria-label="القائمة الرئيسية">
+        <button class="nav-link active" data-page="home"><span class="nav-icon">⌂</span> الرئيسية</button>
+        <button class="nav-link" data-page="verify"><span class="nav-icon">✓</span> تحقق من معلومة</button>
+        <button class="nav-link" data-page="saved"><span class="nav-icon">♡</span> المحفوظات</button>
+      </nav>
+      <div class="sidebar-note">
+        <span class="note-icon">✦</span>
+        <strong>المعرفة الصحية مسؤولية</strong>
+        <p>تأكد من المعلومة قبل مشاركتها. نبيه يساعدك على الوصول إلى مصادر صحية موثوقة.</p>
+      </div>
+      <div class="sidebar-footer">نبيه © 2026</div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark">ن</span><strong>نبيه</strong></div>
+        <div class="topbar-copy"><span class="eyebrow">منصة التحقق الصحي</span><h1 id="page-heading">مرحبًا بك في نبيه</h1></div>
+        <button class="top-verify" data-page="verify"><span>＋</span> تحقق من معلومة</button>
+      </header>
+
+      <section id="page-home" class="page active">
+        <section class="hero">
+          <div class="hero-copy">
+            <span class="hero-kicker"><span class="pulse"></span> معلومة موثوقة، قرار أوعى</span>
+            <h2>لا تصدّق كل ما<br><em>يُقال عن صحتك.</em></h2>
+            <p>وصلتك معلومة صحية وما تدري إذا كانت صحيحة؟ اكتبها في نبيه، وابدأ رحلة التحقق من مصادر موثوقة.</p>
+            <button class="hero-button" data-page="verify">تحقق من معلومة الآن <span>←</span></button>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <div class="hero-emblem"><span>ن</span><i>✦</i></div>
+            <div class="float-card card-check"><b>✓</b><span>تحقق أولًا</span></div>
+            <div class="float-card card-source"><b>✧</b><span>مصادر موثوقة</span></div>
+          </div>
+        </section>
+
+        <section class="quick-stats" aria-label="معلومات المنصة">
+          <div class="stat"><span class="stat-icon">▤</span><div><strong id="articles-count">—</strong><small>مادة صحية متاحة</small></div></div>
+          <div class="stat"><span class="stat-icon">⌕</span><div><strong>مصادر موثوقة</strong><small>نبدأ بوزارة الصحة السعودية</small></div></div>
+          <div class="stat"><span class="stat-icon">♡</span><div><strong>وعي صحي</strong><small>شارك المعلومة بمسؤولية</small></div></div>
+        </section>
+
+        <section class="content-section">
+          <div class="section-heading">
+            <div><span class="eyebrow">اقرأ وتعرّف</span><h2>محتوى صحي موثوق</h2><p>معلومات صحية جُمعت من مصادرها الأصلية.</p></div>
+            <button class="text-button" id="show-all">عرض الكل <span>←</span></button>
+          </div>
+          <div class="filter-row" id="category-filters">
+            <button class="filter-chip active" data-category="all">الكل</button>
+          </div>
+          <div id="articles-grid" class="articles-grid">
+            <div class="loading-card"><span class="spinner"></span><p>جاري تحميل المحتوى الصحي...</p></div>
+          </div>
+          <p id="articles-message" class="inline-message" role="status"></p>
+        </section>
+
+        <section class="source-strip">
+          <div class="source-seal">✓</div>
+          <div><strong>المصدر يصنع الفرق</strong><p>ارجع دائمًا إلى الجهات الصحية الرسمية عند البحث عن معلومة طبية.</p></div>
+          <span class="source-label">وزارة الصحة السعودية</span>
+        </section>
+      </section>
+
+      <section id="page-verify" class="page">
+        <div class="inner-page">
+          <button class="back-link" data-page="home">→ العودة للرئيسية</button>
+          <div class="page-intro"><span class="eyebrow">تحقق قبل أن تشارك</span><h2>هل هذه المعلومة <em>صحيحة؟</em></h2><p>اكتب الادعاء الصحي كما وصلك، وسنساعدك في الوصول إلى المعلومات والمصادر ذات الصلة.</p></div>
+          <div class="verify-layout">
+            <div class="verify-card">
+              <label for="claim-input">اكتب المعلومة الصحية</label>
+              <textarea id="claim-input" maxlength="1000" placeholder="مثال: شرب الماء الدافئ على الريق يعالج جميع مشاكل المعدة..."></textarea>
+              <div class="input-meta"><span>لا تضف معلومات شخصية أو بيانات طبية خاصة.</span><span id="char-count">0 / 1000</span></div>
+              <button id="check-claim" class="primary-button">ابدأ التحقق <span>←</span></button>
+              <p id="verify-feedback" class="form-feedback" role="status">هذه النسخة تعرض واجهة التحقق. سيتم تفعيل نتيجة الذكاء الاصطناعي بعد ربط خدمة التحقق.</p>
+            </div>
+            <aside class="how-card"><span class="how-icon">✦</span><h3>كيف يعمل نبيه؟</h3><ol><li><b>أرسل الادعاء</b><span>اكتب المعلومة التي تريد التحقق منها.</span></li><li><b>ابحث في المصادر</b><span>تتم مقارنة الادعاء بالمعلومات الصحية الموثوقة.</span></li><li><b>افهم النتيجة</b><span>تعرّف على التفسير والمراجع قبل مشاركة المعلومة.</span></li></ol><div class="disclaimer">نبيه أداة توعوية ولا يُعد بديلًا عن استشارة الطبيب.</div></aside>
+          </div>
+        </div>
+      </section>
+
+      <section id="page-article" class="page">
+        <div class="inner-page">
+          <button class="back-link" data-page="home">→ العودة للمحتوى الصحي</button>
+          <article id="article-detail" class="article-detail"></article>
+        </div>
+      </section>
+
+      <section id="page-saved" class="page">
+        <div class="inner-page">
+          <div class="page-intro"><span class="eyebrow">احتفظ بما يهمك</span><h2>المحفوظات</h2><p>المواد الصحية التي حفظتها للرجوع إليها لاحقًا.</p></div>
+          <div id="saved-grid" class="articles-grid"></div>
+          <p id="saved-empty" class="empty-state">لم تحفظ أي مادة بعد. يمكنك حفظ المقالات من بطاقة المحتوى.</p>
+        </div>
+      </section>
+
+      <footer class="mobile-footer">نبيه © 2026 <span>صحتك تبدأ من المعلومة</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
