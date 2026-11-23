@@ -19,7 +19,9 @@
       </a>
       <nav class="main-nav" aria-label="القائمة الرئيسية">
         <button class="nav-link active" data-page="home"><span class="nav-icon">⌂</span> الرئيسية</button>
-        <button class="nav-link" data-page="verify"><span class="nav-icon">✓</span> تحقق من معلومة</button>
+        <button class="nav-link" data-page="how"><span class="nav-icon">✦</span> كيف يعمل</button>
+        <button class="nav-link" data-page="verify"><span class="nav-icon">✓</span> التحقق من المعلومة</button>
+        <button class="nav-link" data-page="plans"><span class="nav-icon">♧</span> الاشتراكات</button>
         <button class="nav-link" data-page="saved"><span class="nav-icon">♡</span> المحفوظات</button>
       </nav>
       <div class="sidebar-note">
@@ -34,7 +36,10 @@
       <header class="topbar">
         <div class="mobile-brand"><span class="brand-mark">ن</span><strong>نبيه</strong></div>
         <div class="topbar-copy"><span class="eyebrow">منصة التحقق الصحي</span><h1 id="page-heading">مرحبًا بك في نبيه</h1></div>
-        <button class="top-verify" data-page="verify"><span>＋</span> تحقق من معلومة</button>
+        <div class="topbar-actions">
+          <button class="login-icon" id="open-login" aria-label="تسجيل الدخول" title="تسجيل الدخول"><span>♙</span><small>تسجيل الدخول</small></button>
+          <button class="top-verify" data-page="verify"><span>＋</span> تحقق من معلومة</button>
+        </div>
       </header>
 
       <section id="page-home" class="page active">
@@ -97,6 +102,30 @@
         </div>
       </section>
 
+      <section id="page-how" class="page">
+        <div class="inner-page">
+          <div class="page-intro"><span class="eyebrow">من المعلومة إلى الوعي</span><h2>كيف يعمل <em>نبيه؟</em></h2><p>خطوات واضحة تساعدك على فهم المعلومة الصحية والرجوع إلى مصدرها.</p></div>
+          <div class="how-steps-grid">
+            <article class="how-step-card"><span>01</span><div class="step-symbol">✎</div><h3>أرسل المعلومة</h3><p>انسخ الادعاء الصحي الذي وصلك أو اكتب السؤال الذي تريد التحقق منه.</p></article>
+            <article class="how-step-card"><span>02</span><div class="step-symbol">⌕</div><h3>نراجع المصادر</h3><p>نبحث في المحتوى الصحي المتاح من الجهات الموثوقة ونقارن ما ورد فيه بالادعاء.</p></article>
+            <article class="how-step-card"><span>03</span><div class="step-symbol">✓</div><h3>افهم النتيجة</h3><p>تعرّف على خلاصة مبسطة، وسبب النتيجة، وروابط المصادر للرجوع إليها.</p></article>
+          </div>
+          <div class="how-note"><strong>هدف نبيه هو رفع الوعي الصحي.</strong><p>لا يقدم نبيه تشخيصًا أو علاجًا، ولا يغني عن استشارة المختصين.</p><button class="primary-button" data-page="verify">جرّب التحقق الآن ←</button></div>
+        </div>
+      </section>
+
+      <section id="page-plans" class="page">
+        <div class="inner-page">
+          <div class="page-intro"><span class="eyebrow">عضويتك في نبيه</span><h2>اختر العضوية <em>المناسبة لك</em></h2><p>ابدأ مجانًا، ويمكنك الانتقال إلى مزايا أوسع عند الحاجة.</p></div>
+          <div class="plans-grid">
+            <article class="plan-card"><span class="plan-label">للبداية</span><h3>المجانية</h3><div class="plan-price">مجانًا</div><p>للاستخدام الأساسي والتعرّف على نبيه.</p><ul><li>الوصول إلى المحتوى الصحي المنشور</li><li>عدد محدود من طلبات التحقق</li><li>عرض المصادر المرتبطة</li></ul><button class="plan-button secondary" data-plan="المجانية">ابدأ مجانًا</button></article>
+            <article class="plan-card featured"><span class="plan-label">الأكثر مرونة</span><h3>المتوسطة</h3><div class="plan-price">قريبًا</div><p>لمن يحتاج إلى استخدام نبيه بشكل متكرر.</p><ul><li>عدد أكبر من طلبات التحقق</li><li>ملخصات وتوضيحات موسعة</li><li>حفظ سجل التحققات</li></ul><button class="plan-button" data-plan="المتوسطة">اختر العضوية</button></article>
+            <article class="plan-card"><span class="plan-label">تجربة متكاملة</span><h3>المميزة</h3><div class="plan-price">قريبًا</div><p>مزايا أوسع وتجربة أكثر شمولًا.</p><ul><li>حدود استخدام أعلى</li><li>مزايا متقدمة عند توفرها</li><li>أولوية في الوصول للخصائص الجديدة</li></ul><button class="plan-button secondary" data-plan="المميزة">اختر العضوية</button></article>
+          </div>
+          <p class="plans-disclaimer">العضويات والأسعار النهائية قيد التحديد. الأزرار حاليًا لعرض التصميم فقط، ولا تتم أي عملية دفع.</p>
+        </div>
+      </section>
+
       <section id="page-article" class="page">
         <div class="inner-page">
           <button class="back-link" data-page="home">→ العودة للمحتوى الصحي</button>
@@ -114,6 +143,15 @@
 
       <footer class="mobile-footer">نبيه © 2026 <span>صحتك تبدأ من المعلومة</span></footer>
     </main>
+  </div>
+  <div id="login-modal" class="modal-backdrop" aria-hidden="true">
+    <section class="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-title">
+      <button class="modal-close" id="close-login" aria-label="إغلاق">×</button>
+      <div class="login-mark">ن</div><span class="eyebrow">مرحبًا بعودتك</span><h2 id="login-title">تسجيل الدخول إلى نبيه</h2>
+      <p>أدخل بريدك الإلكتروني وكلمة المرور للمتابعة.</p>
+      <form id="login-form"><label for="login-email">البريد الإلكتروني</label><input id="login-email" type="email" placeholder="name@example.com" autocomplete="email" required><label for="login-password">كلمة المرور</label><input id="login-password" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password" required><button class="primary-button" type="submit">تسجيل الدخول</button></form>
+      <p class="login-hint" id="login-hint">واجهة تسجيل الدخول جاهزة تصميميًا؛ تفعيل الحسابات والتحقق من كلمات المرور يحتاج إلى ربط نظام مصادقة آمن.</p>
+    </section>
   </div>
   <div id="toast" class="toast" role="status"></div>
   <script src="app.js"></script>
