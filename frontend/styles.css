@@ -84,3 +84,13 @@
 .auth-switch{border:0;background:transparent;color:var(--wine);font-size:12px;font-weight:600;padding:10px}
 @media(max-width:1000px){.site-header{padding:12px 20px;gap:14px;flex-wrap:wrap}.site-header .main-nav{order:4;flex-basis:100%;justify-content:center;overflow-x:auto}.site-header .brand{order:2}.site-header .login-icon{order:1}.main-content{padding:0 22px 35px}}
 @media(max-width:760px){.site-header{position:sticky;min-height:0;padding:10px 13px;gap:9px}.site-header .brand{order:1}.site-header .brand-mark{width:36px;height:36px;border-radius:12px;font-size:22px}.site-header .brand strong{font-size:18px}.site-header .brand small{font-size:9px}.site-header .login-icon{order:0;margin-left:auto;min-width:0;padding:8px 10px}.site-header .login-icon small{display:inline;font-size:10px}.site-header .login-icon span{font-size:18px}.site-header .main-nav{order:3;justify-content:flex-start;gap:4px;padding:5px 0 2px}.site-header .nav-link{padding:8px 10px;font-size:11px}.site-header .nav-icon{font-size:16px}.main-content{padding:0 15px 25px}.page-heading-bar{padding:18px 0 3px}.page-heading-bar h1{font-size:16px}.trust-note{font-size:9px;padding:7px 10px}.hero{margin-top:15px;padding:25px 21px;min-height:0}.hero h2{font-size:32px}.inner-page{margin:25px auto 40px}.page-intro h2{font-size:25px}.how-steps-grid,.plans-grid{grid-template-columns:1fr}.how-step-card{min-height:0}.plan-card{min-height:0}.history-empty{padding:28px 18px}.quick-stats{margin-bottom:30px}}
+
+.site-header .nav-icon{width:29px;height:29px;display:inline-grid;place-items:center;border-radius:9px;background:#f7f1ed;color:var(--wine);font-size:17px;flex-shrink:0}
+.site-header .nav-link.active .nav-icon{background:var(--wine);color:#fff}
+.site-header .login-icon span{width:30px;height:30px;display:grid;place-items:center;background:#f5edf0;border-radius:9px}
+.plan-icon{width:54px;height:54px;display:grid;place-items:center;border-radius:17px;background:#f5edf0;color:var(--wine);font-size:27px;margin-bottom:14px}
+.plan-card.featured .plan-icon{background:var(--wine);color:#fff}
+.plan-card li{list-style:none;position:relative;padding-right:23px}
+.plan-card li:before{content:"✓";position:absolute;right:0;top:0;color:var(--green);font-weight:700;font-size:14px}
+.plan-card ul{padding:0}
+@media(max-width:760px){.site-header .nav-icon{width:24px;height:24px;font-size:14px}.site-header .nav-link{gap:5px}}
