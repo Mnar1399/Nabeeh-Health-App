@@ -151,9 +151,26 @@ loginModal.addEventListener("click", event => {
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") closeLogin();
 });
+$("#show-signup").addEventListener("click", () => {
+  authMode = authMode === "login" ? "signup" : "login";
+  $("#login-title").textContent = authMode === "signup" ? "إنشاء حساب جديد" : "تسجيل الدخول إلى نبيه";
+  $("#login-modal .login-modal > p").textContent = authMode === "signup" ? "أنشئ حسابك لتجميع محفوظاتك وسجل تحققاتك في مكان واحد." : "ادخل إلى حسابك للوصول إلى محفوظاتك وسجل تحققاتك.";
+  const form = $("#login-form");
+  if (authMode === "signup") {
+    if (!$("#signup-name")) form.insertAdjacentHTML("afterbegin", '<label id="signup-name-field" for="signup-name">الاسم</label><input id="signup-name" type="text" placeholder="الاسم الكامل" autocomplete="name" required><label id="signup-phone-field" for="signup-phone">رقم الجوال</label><input id="signup-phone" type="tel" placeholder="05xxxxxxxx" autocomplete="tel" required>');
+    $("#login-form button[type=submit]").textContent = "إنشاء الحساب";
+    $("#show-signup").textContent = "لديك حساب؟ تسجيل الدخول";
+  } else {
+    ["#signup-name-field", "#signup-name", "#signup-phone-field", "#signup-phone"].forEach(sel => $(sel)?.remove());
+    $("#login-form button[type=submit]").textContent = "تسجيل الدخول";
+    $("#show-signup").textContent = "إنشاء حساب جديد";
+  }
+});
 $("#login-form").addEventListener("submit", event => {
   event.preventDefault();
-  $("#login-hint").textContent = "تم التحقق من تنسيق البريد وإدخال كلمة المرور في النموذج فقط. لم يتم تسجيل الدخول؛ نحتاج إلى إنشاء نظام حسابات آمن وربطه بالخادم.";
+  $("#login-hint").textContent = authMode === "signup"
+    ? "واجهة إنشاء الحساب جاهزة. لم تُحفظ البيانات بعد؛ نحتاج إلى ربطها بقاعدة البيانات ونظام مصادقة آمن."
+    : "تم التحقق من تنسيق البريد وإدخال كلمة المرور في النموذج فقط. لم يتم تسجيل الدخول؛ نحتاج إلى إنشاء نظام حسابات آمن وربطه بالخادم.";
 });
 $$("[data-plan]").forEach(button => button.addEventListener("click", () => {
   const plan = button.dataset.plan;
