@@ -24,7 +24,7 @@ function goToPage(page) {
   const target = $(`#page-${page}`);
   if (target) target.classList.add("active");
   $$(".nav-link").forEach(el => el.classList.toggle("active", el.dataset.page === page));
-  const headings = {home:"مرحبًا بك في نبيه", verify:"تحقق من معلومة صحية", article:"المحتوى الصحي", saved:"المحفوظات"};
+  const headings = {home:"مرحبًا بك في نبيه", how:"كيف يعمل نبيه؟", verify:"التحقق من المعلومة", plans:"الاشتراكات والعضويات", article:"المحتوى الصحي", saved:"المحفوظات"};
   $("#page-heading").textContent = headings[page] || "نبيه";
   window.scrollTo({top:0, behavior:"smooth"});
   if (page === "saved") renderSaved();
@@ -129,3 +129,36 @@ $("#check-claim").addEventListener("click", () => {
 });
 $("#show-all").addEventListener("keydown", e => { if (e.key === "Enter") e.currentTarget.click(); });
 loadArticles();
+
+
+// Login modal: presentation only until a secure authentication backend is connected.
+const loginModal = $("#login-modal");
+function openLogin() {
+  loginModal.classList.add("open");
+  loginModal.setAttribute("aria-hidden", "false");
+  $("#login-email").focus();
+}
+function closeLogin() {
+  loginModal.classList.remove("open");
+  loginModal.setAttribute("aria-hidden", "true");
+}
+$("#open-login").addEventListener("click", openLogin);
+$("#close-login").addEventListener("click", closeLogin);
+loginModal.addEventListener("click", event => {
+  if (event.target === loginModal) closeLogin();
+});
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeLogin();
+});
+$("#login-form").addEventListener("submit", event => {
+  event.preventDefault();
+  $("#login-hint").textContent = "تم التحقق من تنسيق البريد وإدخال كلمة المرور في النموذج فقط. لم يتم تسجيل الدخول؛ نحتاج إلى إنشاء نظام حسابات آمن وربطه بالخادم.";
+});
+$$("[data-plan]").forEach(button => button.addEventListener("click", () => {
+  const plan = button.dataset.plan;
+  if (plan === "المجانية") {
+    showToast("العضوية المجانية ستكون خيار البداية عند تفعيل الحسابات.");
+  } else {
+    showToast("هذه العضوية قيد التجهيز، ولا توجد عملية دفع حاليًا.");
+  }
+}));
