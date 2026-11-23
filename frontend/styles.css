@@ -2,3 +2,46 @@
 @media(max-width:1100px){.main-content{padding:0 28px 25px}.articles-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding:30px}.hero h2{font-size:33px}}
 @media(max-width:760px){.app-shell{display:block}.sidebar{display:none}.main-content{padding:0 17px 22px}.topbar{height:78px}.topbar-copy{margin-left:auto}.topbar h1{font-size:16px}.topbar .eyebrow{font-size:9px}.mobile-brand{display:flex;align-items:center;gap:8px;color:var(--wine)}.mobile-brand .brand-mark{width:34px;height:34px;border-radius:11px;font-size:21px}.mobile-brand strong{font-size:17px}.top-verify{font-size:0;padding:9px 12px}.top-verify span{font-size:20px;margin:0}.hero{margin-top:18px;padding:24px 21px;grid-template-columns:1fr;min-height:0}.hero h2{font-size:31px}.hero p{font-size:12px}.hero-art{height:155px;margin-top:12px}.hero-emblem{width:85px;height:85px;border-radius:28px;font-size:53px}.orbit-one{width:185px;height:120px}.orbit-two{width:145px;height:185px}.card-check{right:10%}.card-source{left:10%}.quick-stats{gap:8px;margin:13px 0 30px}.stat{padding:11px 8px;gap:7px;align-items:flex-start}.stat-icon{width:29px;height:29px;font-size:15px;border-radius:9px;flex-shrink:0}.stat strong{font-size:10px}.stat small{font-size:8px;line-height:1.6;display:block}.section-heading h2{font-size:18px}.section-heading p{font-size:10px}.text-button{font-size:10px}.articles-grid{grid-template-columns:1fr}.article-card{min-height:175px}.source-strip{padding:13px;gap:9px}.source-strip p{max-width:220px}.source-label{display:none}.inner-page{margin:22px auto}.page-intro h2{font-size:24px}.verify-layout{grid-template-columns:1fr}.verify-card,.how-card{padding:19px}.article-detail{padding:20px}.article-detail h2{font-size:21px}.mobile-footer{display:flex;justify-content:space-between;color:#a49a9b;font-size:10px;padding:24px 3px 0}.mobile-footer span{color:#8c7f82}}
 @media(min-width:761px) and (max-width:900px){.app-shell{grid-template-columns:210px minmax(0,1fr)}.sidebar{padding:25px 14px}.main-content{padding:0 20px 25px}.hero-art{transform:scale(.85)}}
+
+
+/* Main navigation, pricing and account UI */
+.topbar-actions{display:flex;align-items:center;gap:12px}
+.login-icon{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--paper);color:var(--wine);border-radius:12px;padding:9px 13px;font-size:12px;font-weight:600}
+.login-icon span{font-size:20px;line-height:1}
+.login-icon:hover{background:#f5edf0}
+.main-nav{margin-top:4px}
+.how-steps-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.how-step-card{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:24px;position:relative;overflow:hidden}
+.how-step-card>span{position:absolute;left:18px;top:15px;color:#cbb9b7;font-size:13px;font-weight:700}
+.step-symbol{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:#f5edf0;color:var(--wine);font-size:25px;margin-bottom:18px}
+.how-step-card h3{font-size:16px;margin:0 0 8px;color:var(--wine)}
+.how-step-card p{font-size:12px;line-height:2;color:var(--muted);margin:0}
+.how-note{margin-top:18px;padding:23px;border-radius:16px;background:var(--cream);border:1px solid #eee5dc}
+.how-note strong{color:var(--wine);font-size:15px}.how-note p{font-size:12px;color:var(--muted);margin:7px 0 16px}
+.how-note .primary-button{width:auto}
+.plans-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:stretch}
+.plan-card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:23px;display:flex;flex-direction:column;min-height:365px}
+.plan-card.featured{border:2px solid #b98d98;background:#fffdfa;box-shadow:var(--shadow);transform:translateY(-5px)}
+.plan-label{align-self:flex-start;background:#f5edf0;color:var(--wine);padding:5px 10px;border-radius:20px;font-size:10px}
+.plan-card h3{font-size:20px;color:var(--wine);margin:17px 0 5px}
+.plan-price{font-size:25px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.plan-card>p{font-size:11px;color:var(--muted);margin:0 0 15px;line-height:1.8}
+.plan-card ul{padding:0 18px 0 0;margin:0 0 22px;display:grid;gap:10px;font-size:11px;color:#655b5d;line-height:1.7}
+.plan-card li::marker{color:var(--wine)}
+.plan-button{margin-top:auto;border:1px solid var(--wine);background:var(--wine);color:white;border-radius:10px;padding:11px 14px;font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.plan-button.secondary{background:transparent;color:var(--wine)}
+.plan-button:hover{filter:brightness(.95)}
+.plans-disclaimer{font-size:10px;color:var(--muted);text-align:center;margin-top:17px}
+.modal-backdrop{position:fixed;inset:0;background:#21171bc2;display:none;align-items:center;justify-content:center;padding:18px;z-index:30}
+.modal-backdrop.open{display:flex}
+.login-modal{width:min(100%,430px);background:var(--paper);border-radius:20px;padding:30px;position:relative;box-shadow:0 25px 80px #1e101744}
+.modal-close{position:absolute;left:17px;top:12px;border:0;background:transparent;color:var(--muted);font-size:27px;cursor:pointer}
+.login-mark{width:48px;height:48px;border-radius:15px;background:var(--wine);color:white;display:grid;place-items:center;font-size:28px;font-weight:700;margin-bottom:18px}
+.login-modal h2{font-size:21px;color:var(--wine);margin:6px 0}
+.login-modal>p{font-size:11px;color:var(--muted);line-height:1.8}
+.login-modal form{display:grid;gap:9px;margin-top:20px}
+.login-modal label{font-size:12px;font-weight:600}
+.login-modal input{width:100%;border:1px solid var(--line);background:#fdfbf8;border-radius:10px;padding:12px;direction:rtl;font:inherit;font-size:13px;margin-bottom:7px}
+.login-modal input:focus{outline:2px solid #5c0f2220;border-color:#a87583}
+.login-hint{background:var(--cream);border-radius:10px;padding:11px;margin-top:14px!important}
+@media(max-width:760px){.topbar-actions{gap:7px}.login-icon{padding:8px 9px}.login-icon small{display:none}.how-steps-grid,.plans-grid{grid-template-columns:1fr}.plan-card{min-height:0}.plan-card.featured{transform:none}.how-step-card{padding:19px}.login-modal{padding:25px 20px}}
