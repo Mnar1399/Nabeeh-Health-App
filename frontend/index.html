@@ -12,35 +12,22 @@
 </head>
 <body>
   <div class="app-shell">
-    <aside class="sidebar">
+    <header class="site-header">
+      <button class="login-icon" id="open-login" aria-label="تسجيل الدخول" title="تسجيل الدخول"><span>♙</span><small>تسجيل الدخول</small></button>
       <a class="brand" href="#" data-page="home" aria-label="نبيه - الرئيسية">
-        <span class="brand-mark">ن</span>
-        <span><strong>نبيه</strong><small>صحتك تبدأ من المعلومة</small></span>
+        <span class="brand-mark">ن</span><span><strong>نبيه</strong><small>صحتك تبدأ من المعلومة</small></span>
       </a>
       <nav class="main-nav" aria-label="القائمة الرئيسية">
         <button class="nav-link active" data-page="home"><span class="nav-icon">⌂</span> الرئيسية</button>
         <button class="nav-link" data-page="how"><span class="nav-icon">✦</span> كيف يعمل</button>
-        <button class="nav-link" data-page="verify"><span class="nav-icon">✓</span> التحقق من المعلومة</button>
+        <button class="nav-link" data-page="verify"><span class="nav-icon">⌕</span> تحقق من معلومة</button>
+        <button class="nav-link" data-page="history"><span class="nav-icon">◷</span> سجل التحققات</button>
         <button class="nav-link" data-page="plans"><span class="nav-icon">♧</span> الاشتراكات</button>
         <button class="nav-link" data-page="saved"><span class="nav-icon">♡</span> المحفوظات</button>
       </nav>
-      <div class="sidebar-note">
-        <span class="note-icon">✦</span>
-        <strong>المعرفة الصحية مسؤولية</strong>
-        <p>تأكد من المعلومة قبل مشاركتها. نبيه يساعدك على الوصول إلى مصادر صحية موثوقة.</p>
-      </div>
-      <div class="sidebar-footer">نبيه © 2026</div>
-    </aside>
-
+    </header>
     <main class="main-content">
-      <header class="topbar">
-        <div class="mobile-brand"><span class="brand-mark">ن</span><strong>نبيه</strong></div>
-        <div class="topbar-copy"><span class="eyebrow">منصة التحقق الصحي</span><h1 id="page-heading">مرحبًا بك في نبيه</h1></div>
-        <div class="topbar-actions">
-          <button class="login-icon" id="open-login" aria-label="تسجيل الدخول" title="تسجيل الدخول"><span>♙</span><small>تسجيل الدخول</small></button>
-          <button class="top-verify" data-page="verify"><span>＋</span> تحقق من معلومة</button>
-        </div>
-      </header>
+      <div class="page-heading-bar"><div><span class="eyebrow">منصة التحقق الصحي</span><h1 id="page-heading">مرحبًا بك في نبيه</h1></div><span class="trust-note"><span>✦</span> معلومة موثوقة، قرار أوعى</span></div>
 
       <section id="page-home" class="page active">
         <section class="hero">
@@ -126,6 +113,13 @@
         </div>
       </section>
 
+      <section id="page-history" class="page">
+        <div class="inner-page">
+          <div class="page-intro"><span class="eyebrow">رحلتك مع نبيه</span><h2>سجل <em>التحققات</em></h2><p>ارجع إلى المعلومات التي طلبت التحقق منها سابقًا.</p></div>
+          <div class="history-empty"><div class="history-empty-icon">◷</div><h3>سيظهر سجل تحققاتك هنا</h3><p>عند تفعيل الحسابات، سيُحفظ كل تحقق داخل حسابك لتتمكن من الرجوع إليه في أي وقت.</p><button class="primary-button" data-page="verify">تحقق من معلومة جديدة</button></div>
+        </div>
+      </section>
+
       <section id="page-article" class="page">
         <div class="inner-page">
           <button class="back-link" data-page="home">→ العودة للمحتوى الصحي</button>
@@ -148,8 +142,8 @@
     <section class="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-title">
       <button class="modal-close" id="close-login" aria-label="إغلاق">×</button>
       <div class="login-mark">ن</div><span class="eyebrow">مرحبًا بعودتك</span><h2 id="login-title">تسجيل الدخول إلى نبيه</h2>
-      <p>أدخل بريدك الإلكتروني وكلمة المرور للمتابعة.</p>
-      <form id="login-form"><label for="login-email">البريد الإلكتروني</label><input id="login-email" type="email" placeholder="name@example.com" autocomplete="email" required><label for="login-password">كلمة المرور</label><input id="login-password" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password" required><button class="primary-button" type="submit">تسجيل الدخول</button></form>
+      <p>ادخل إلى حسابك للوصول إلى محفوظاتك وسجل تحققاتك.</p>
+      <form id="login-form"><label for="login-email">البريد الإلكتروني</label><input id="login-email" type="email" placeholder="name@example.com" autocomplete="email" required><label for="login-password">كلمة المرور</label><input id="login-password" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password" required><button class="primary-button" type="submit">تسجيل الدخول</button><button type="button" class="auth-switch" id="show-signup">إنشاء حساب جديد</button></form>
       <p class="login-hint" id="login-hint">واجهة تسجيل الدخول جاهزة تصميميًا؛ تفعيل الحسابات والتحقق من كلمات المرور يحتاج إلى ربط نظام مصادقة آمن.</p>
     </section>
   </div>
