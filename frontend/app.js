@@ -24,7 +24,7 @@ function goToPage(page) {
   const target = $(`#page-${page}`);
   if (target) target.classList.add("active");
   $$(".nav-link").forEach(el => el.classList.toggle("active", el.dataset.page === page));
-  const headings = {home:"مرحبًا بك في نبيه", how:"كيف يعمل نبيه؟", verify:"التحقق من المعلومة", plans:"الاشتراكات والعضويات", article:"المحتوى الصحي", saved:"المحفوظات"};
+  const headings = {home:"مرحبًا بك في نبيه", how:"كيف يعمل نبيه؟", verify:"التحقق من المعلومة", history:"سجل التحققات", plans:"الاشتراكات والعضويات", article:"المحتوى الصحي", saved:"المحفوظات"};
   $("#page-heading").textContent = headings[page] || "نبيه";
   window.scrollTo({top:0, behavior:"smooth"});
   if (page === "saved") renderSaved();
@@ -133,6 +133,7 @@ loadArticles();
 
 // Login modal: presentation only until a secure authentication backend is connected.
 const loginModal = $("#login-modal");
+let authMode = "login";
 function openLogin() {
   loginModal.classList.add("open");
   loginModal.setAttribute("aria-hidden", "false");
