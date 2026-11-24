@@ -63,16 +63,25 @@ def collect_rss():
 
             connection.execute(
                 """
-                INSERT OR IGNORE INTO articles
-                (source_id, title, content, url, language, content_hash, status)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO articles
+                (source_id, title, content, url, language, category, content_hash, status)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(url) DO UPDATE SET
+                    title = excluded.title,
+                    content = CASE
+                        WHEN length(trim(COALESCE(articles.content, ''))) < length(trim(COALESCE(excluded.content, '')))
+                        THEN excluded.content ELSE articles.content END,
+                    language = excluded.language,
+                    category = excluded.category,
+                    content_hash = excluded.content_hash
                 """,
                 (
                     source_id,
                     title,
                     summary[:3000],
                     link,
-                    "en",
+                    "ar" if any("\\u0600" <= char <= "\\u06FF" for char in title) else "en",
+                    "محتوى صحي",
                     content_hash,
                     "pending"
                 )
