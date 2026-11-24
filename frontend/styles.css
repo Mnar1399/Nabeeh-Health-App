@@ -192,3 +192,44 @@ body{background:#fbfaf7}
 .english-ui .plan-card li:before{right:auto;left:0}
 .english-ui .bot-message{border-radius:17px 17px 17px 4px}
 .english-ui .user-message{margin-left:0;margin-right:auto;border-radius:17px 17px 4px 17px}
+
+/* Polished profile controls, compact anchored product tour and header fixes */
+.site-header .brand{order:3;display:flex;align-items:center;gap:9px;padding:0;flex-shrink:0}
+.site-header .brand-mark{width:40px;height:40px;border-radius:12px;background:var(--wine);color:#fff;display:grid;place-items:center;box-shadow:0 5px 14px #5c0f221c}
+.site-header .brand-mark svg{width:25px;height:25px}
+.site-header .brand-word strong{display:block;font-size:22px;line-height:1.1;color:var(--wine);font-weight:700}
+.site-header .brand-word small{display:block;font-size:10px;color:var(--muted);margin-top:4px}
+.site-header .login-icon{order:0;margin-left:auto;margin-right:0;display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fffefa;color:var(--wine);border-radius:11px;padding:9px 13px;min-width:0;box-shadow:none}
+.site-header .login-icon:hover{background:#f8f1f2;border-color:#decbd0}
+.site-header .login-icon span{width:28px;height:28px;display:grid;place-items:center;background:#f5edf0;border-radius:9px;font-size:18px}
+.site-header .login-icon small{font-size:11px;font-weight:600}
+.site-header .language-button{flex-shrink:0}
+.site-header .main-nav{min-width:0}
+.profile-layout{gap:22px;grid-template-columns:minmax(0,1.45fr) minmax(230px,.75fr)}
+.profile-card,.nafath-card{padding:25px 27px;border-radius:17px;box-shadow:0 5px 20px rgba(67,29,39,.035)}
+.profile-card-head{padding-bottom:16px;border-bottom:1px solid var(--line)}
+.health-form{gap:17px 18px}
+.health-form label{font-size:12px;color:#5d5356}
+.health-form input,.health-form select{height:43px;border:1px solid #e6ded7;background:#fffefa;border-radius:9px;padding:9px 12px;font-size:12px;transition:border-color .2s,box-shadow .2s}
+.health-form input:focus,.health-form select:focus{outline:0;border-color:#b58b96;box-shadow:0 0 0 3px #5c0f2210}
+.profile-save-button{grid-column:1/-1;justify-self:start;min-width:145px;border:1px solid var(--wine);background:var(--wine);color:#fff;border-radius:9px;padding:10px 19px;font:inherit;font-size:12px;font-weight:600;box-shadow:none;transition:.2s}
+.profile-save-button:hover{background:var(--wine2);transform:translateY(-1px)}
+.privacy-note{font-size:10px;background:#f8f5ef;border:1px solid #eee7dd;padding:11px 13px}
+.nafath-card{background:#f8f5ef;border:1px solid #eee7dd}
+.nafath-button{max-width:260px;margin:8px auto 0;padding:10px 12px;border-radius:9px}
+.guide-backdrop,.guide-card{display:none!important}
+.guide-tip{position:fixed;z-index:1000;width:min(330px,calc(100vw - 24px));background:#343434;color:#fff;border:1px solid #4b4b4b;border-radius:11px;padding:13px 15px;box-shadow:0 10px 32px #0003;display:none;text-align:right;direction:rtl}
+.guide-tip.visible{display:block}
+.guide-tip-pointer{position:absolute;top:-7px;right:28px;width:13px;height:13px;background:#343434;border-left:1px solid #4b4b4b;border-top:1px solid #4b4b4b;transform:rotate(45deg)}
+.guide-tip-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.guide-tip-step{font-size:10px;color:#c9c9c9}
+.guide-tip .guide-skip{font-size:10px;color:#d0d0d0;padding:2px 5px}
+.guide-tip h2{font-size:13px;color:#fff;margin:4px 0 5px}
+.guide-tip p{font-size:11px;color:#e1e1e1;line-height:1.8;margin:0}
+.guide-tip-actions{display:flex;justify-content:flex-start;margin-top:10px}
+.guide-tip-actions button{border:0;border-radius:7px;background:#eee;color:#292929;padding:6px 15px;font:inherit;font-size:10px;font-weight:700}
+.guide-highlight{position:relative!important;z-index:999!important;outline:2px solid #9d9d9d!important;outline-offset:4px!important;border-radius:10px!important}
+body:has(.guide-tip.visible):after{content:"";position:fixed;inset:0;z-index:998;background:#00000012;pointer-events:none}
+@media(max-width:1050px){.site-header .brand{order:1}.site-header .main-nav{order:4}.site-header .login-icon{order:0}.site-header .language-button{order:2}}
+@media(max-width:760px){.site-header .brand-word strong{font-size:18px}.site-header .brand-word small{display:none}.site-header .brand-mark{width:34px;height:34px}.site-header .brand-mark svg{width:22px;height:22px}.profile-layout{grid-template-columns:1fr}.profile-card,.nafath-card{padding:19px}.health-form{grid-template-columns:1fr 1fr}.health-form .full-field{grid-column:1/-1}.profile-save-button{grid-column:1/-1;justify-self:stretch}.site-header .login-icon small{display:inline}.guide-tip{width:min(310px,calc(100vw - 24px))}}
+.english-ui .guide-tip{direction:ltr;text-align:left}
