@@ -179,3 +179,16 @@ body{background:#fbfaf7}
 .guide-actions .primary-button{width:auto;min-width:110px}
 @media(max-width:1050px){.site-header{flex-wrap:wrap;padding:12px 18px}.site-header .main-nav{order:4;flex-basis:100%;overflow-x:auto;justify-content:flex-start}.trends-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){.site-header{gap:8px;padding:9px 11px}.site-header .brand{margin:0}.site-header .login-icon{min-width:0;padding:8px}.site-header .login-icon small{display:none}.site-header .main-nav{gap:3px;padding-top:6px}.site-header .nav-link{font-size:10px;padding:7px 8px}.site-header .nav-icon{width:22px;height:22px;font-size:13px}.language-button{padding:7px 9px}.home-hero{margin:16px auto 30px;padding:26px 20px;grid-template-columns:1fr;gap:5px;min-height:0}.home-hero h1{font-size:36px;margin:14px 0 8px}.home-hero p{font-size:13px}.health-visual{min-height:270px}.visual-caption{bottom:0}.trends-grid{grid-template-columns:1fr}.page-intro h1{font-size:25px}.profile-layout{grid-template-columns:1fr}.health-form{grid-template-columns:1fr}.health-form .full-field,.health-form .primary-button{grid-column:auto}.chat-messages{min-height:220px}.inner-page{margin:25px auto 40px}}
+
+/* English layout direction */
+.english-ui .site-header .login-icon{margin-left:0;margin-right:auto}
+.english-ui .home-hero-copy,.english-ui .page-intro{text-align:left}
+.english-ui .home-hero p{margin-left:0;margin-right:auto}
+.english-ui .visual-caption{right:auto;left:3%}
+.english-ui .health-form label,.english-ui .health-form input,.english-ui .health-form select{text-align:left}
+.english-ui .profile-card-head{text-align:left}
+.english-ui .plan-card ul{padding-left:0;padding-right:0}
+.english-ui .plan-card li{padding-right:0;padding-left:23px}
+.english-ui .plan-card li:before{right:auto;left:0}
+.english-ui .bot-message{border-radius:17px 17px 17px 4px}
+.english-ui .user-message{margin-left:0;margin-right:auto;border-radius:17px 17px 4px 17px}
