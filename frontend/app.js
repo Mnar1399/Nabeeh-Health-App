@@ -92,6 +92,7 @@ function goToPage(page, withGuide=true) {
   $("#page-heading").textContent = key ? translations[currentLanguage][key] : "Nabeeh";
   window.scrollTo({top:0,behavior:"smooth"});
   if (page === "saved") renderSaved();
+  if (page === "trends") loadHealthTrends();
   if (page === "history") renderHistory();
   if (withGuide) showGuide(page);
 }
@@ -138,6 +139,36 @@ function renderSaved() {
   $("#saved-grid").innerHTML=saved.map(renderArticleCard).join("");
   $("#saved-empty").style.display=saved.length?"none":"block";
   bindArticleActions();
+}
+async function loadHealthTrends() {
+  const grid = $("#trends-grid");
+  if (!grid) return;
+  grid.innerHTML = '<div class="loading-card">جاري تحميل أحدث المعلومات الصحية من مصادر وزارة الصحة...</div>';
+  try {
+    const response = await fetch(API_BASE + "/trends");
+    if (!response.ok) throw new Error("Trends API unavailable");
+    const items = await response.json();
+    if (!items.length) {
+      grid.innerHTML = '<div class="loading-card">لا توجد مواد من موجز وزارة الصحة حاليًا. شغّلي جامع RSS لتحديث المحتوى.</div>';
+      return;
+    }
+    grid.innerHTML = items.map(item => {
+      const excerpt = String(item.content || "").replace(/\\s+/g," ").slice(0,190);
+      return `<article class="trend-card">
+        <div class="trend-icon">✚</div>
+        <span class="trend-tag">محتوى من ${escapeHTML(item.source_name || "مصدر صحي")}</span>
+        <h2>${escapeHTML(item.title)}</h2>
+        <p>${escapeHTML(excerpt)}${excerpt.length>=190?"…":""}</p>
+        <div class="trend-bottom">
+          <span class="verdict pending">محتوى توعوي · ليس حكم تحقق</span>
+          <a class="text-button trend-source-link" href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer">المصدر الأصلي ↗</a>
+        </div>
+      </article>`;
+    }).join("");
+  } catch (error) {
+    console.error(error);
+    grid.innerHTML = '<div class="loading-card">تعذر تحميل الترندات. تأكدي من تشغيل خادم نبيه.</div>';
+  }
 }
 function renderHistory() {
   const box=$("#history-list");
@@ -213,6 +244,7 @@ $("#health-profile-form").addEventListener("submit",e=>{
 $$("[data-plan]").forEach(button=>button.addEventListener("click",()=>showToast("تفاصيل هذه العضوية قيد الاعتماد؛ لا توجد عملية دفع مفعّلة.")));
 
 loadArticles();
+loadHealthTrends();
 setLanguage("ar");
 goToPage("home",false);
 showGuide("home");
