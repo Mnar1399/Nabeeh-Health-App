@@ -43,7 +43,7 @@ function setLanguage(lang) {
   $("#language-toggle b").textContent = translations[lang].language;
   $("#language-toggle").setAttribute("aria-label", lang === "ar" ? "Switch to English" : "التبديل إلى العربية");
   const headingKey = currentPage + "Heading";
-  if (translations[lang][headingKey]) $("#page-heading").textContent = translations[lang][headingKey];
+  if (translations[lang][headingKey] && $("#page-heading")) $("#page-heading").textContent = translations[lang][headingKey];
   $("#claim-input").placeholder = translations[lang].claimPlaceholder;
 }
 $("#language-toggle").addEventListener("click", () => setLanguage(currentLanguage === "ar" ? "en" : "ar"));
@@ -56,48 +56,53 @@ function showToast(message) {
   showToast.timer = setTimeout(() => toast.classList.remove("show"), 2600);
 }
 const pageHeadings = {home:"homeHeading",trends:"trendsHeading",verify:"verifyHeading",history:"historyHeading",plans:"plansHeading",saved:"savedHeading",profile:"profileHeading"};
-const guides = {
-  home:{icon:"⌂",title:"الرئيسية",text:"ابدأ من هنا للتعرف على نبيه، ثم انتقل مباشرة إلى التحقق من أي معلومة صحية."},
-  trends:{icon:"↗",title:"ترندات الصحة",text:"تصفح الموضوعات والشائعات المتداولة. لن نعرض حكمًا على أي موضوع قبل التحقق من مصادره."},
-  verify:{icon:"⌕",title:"مساعد التحقق",text:"اكتب الادعاء الصحي بوضوح. لا تشارك اسمك أو بياناتك الطبية الخاصة في المحادثة."},
-  history:{icon:"◷",title:"سجل التحققات",text:"ستجد هنا الأسئلة ونتائج التحقق السابقة المرتبطة بحسابك بعد تفعيل تسجيل الدخول."},
-  plans:{icon:"♧",title:"الاشتراكات",text:"قارن بين العضويات وحدود الاستخدام. الأسعار النهائية ستعلن بعد اعتماد الباقات."},
-  saved:{icon:"♡",title:"المحفوظات",text:"احتفظ بالمقالات التي تهمك للعودة إليها لاحقًا. ستصبح مرتبطة بحسابك عند تفعيل الحسابات."},
-  profile:{icon:"◎",title:"ملفك الصحي",text:"يمكنك إضافة العمر والوزن والطول والاهتمامات اختياريًا. لا تضف معلومات طبية حساسة."}
+const guideTours = {
+ home:[{target:".home-hero-copy",title:"مرحبًا بك في نبيه",text:"هذه الصفحة الرئيسية؛ من هنا تبدأ رحلتك للتحقق من المعلومات الصحية."},{target:".hero-button",title:"ابدأ التحقق",text:"اضغط هنا للانتقال إلى المحادثة وكتابة الادعاء الصحي."}],
+ trends:[{target:"[data-guide='trends-intro']",title:"ترندات الصحة",text:"هنا نعرض المواضيع الصحية المنتشرة التي نجمعها من موجز وزارة الصحة."},{target:"[data-guide='trends-filters']",title:"تصفّح المواضيع",text:"استخدم التصنيفات للوصول إلى مواضيع التغذية واللياقة والشائعات."},{target:"#trends-grid",title:"المعلومة والمصدر",text:"اقرأ ملخص المادة وافتح رابط وزارة الصحة الأصلي. ظهورها هنا لا يعني أنها خضعت للتحقق."}],
+ verify:[{target:".page-intro",title:"تحقق من معلومة",text:"اكتب الادعاء الصحي الذي وصل إليك وتريد التحقق منه."},{target:"[data-guide='verify-chat']",title:"محادثة نبيه",text:"ستظهر هنا نتيجة التحقق والتفسير والمصادر بعد ربط محرك الذكاء الاصطناعي."}],
+ history:[{target:".page-intro",title:"سجل التحققات",text:"ستجد هنا أسئلتك السابقة ونتائجها بعد تفعيل الحسابات والحفظ."}],
+ plans:[{target:".plans-grid",title:"الاشتراكات",text:"تعرف على العضويات وحدود الاستخدام. الدفع غير مفعّل حاليًا."}],
+ saved:[{target:".page-intro",title:"المحفوظات",text:"هنا تجد المواد الصحية التي تحفظها للعودة إليها."}],
+ profile:[{target:".page-intro",title:"ملفك الصحي",text:"يمكنك إضافة معلومات اختيارية لتخصيص المحتوى الذي يظهر لك."},{target:"[data-guide='profile-fields']",title:"بياناتك الصحية",text:"أدخل العمر والوزن والطول واهتماماتك. كل الحقول اختيارية."}]
 };
-function showGuide(page) {
-  const guide = guides[page];
-  if (!guide || sessionStorage.getItem("nabeeh_guide_" + page)) return;
-  $("#guide-icon").textContent = guide.icon;
-  $("#guide-title").textContent = guide.title;
-  $("#guide-text").textContent = guide.text;
-  $("#guide-progress").style.setProperty("--progress","100%");
-  $("#page-guide").classList.add("open");
-  $("#page-guide").setAttribute("aria-hidden","false");
-  sessionStorage.setItem("nabeeh_guide_" + page,"1");
+let activeTour=[],activeTourIndex=0,activeTourPage="";
+function showGuide(page){
+ const tour=guideTours[page];
+ if(!tour||sessionStorage.getItem("nabeeh_guide_"+page))return;
+ activeTour=tour;activeTourIndex=0;activeTourPage=page;renderGuideStep();
 }
-function closeGuide() {
-  $("#page-guide").classList.remove("open");
-  $("#page-guide").setAttribute("aria-hidden","true");
+function renderGuideStep(){
+ const step=activeTour[activeTourIndex],tip=$("#guide-tip");
+ if(!step||!tip)return closeGuide();
+ const target=document.querySelector(step.target);
+ if(!target)return closeGuide();
+ $$(".guide-highlight").forEach(el=>el.classList.remove("guide-highlight"));
+ target.classList.add("guide-highlight");
+ $("#guide-title").textContent=step.title;
+ $("#guide-text").textContent=step.text;
+ $("#guide-step").textContent=(activeTourIndex+1)+" / "+activeTour.length;
+ $("#guide-next").textContent=activeTourIndex===activeTour.length-1?"إنهاء":"التالي";
+ tip.classList.add("visible");tip.setAttribute("aria-hidden","false");
+ target.scrollIntoView({behavior:"smooth",block:"center"});
+ requestAnimationFrame(()=>{
+  const r=target.getBoundingClientRect(),b=tip.getBoundingClientRect();
+  let top=r.bottom+12;
+  if(top+b.height>innerHeight-12)top=r.top-b.height-12;
+  top=Math.max(12,Math.min(top,innerHeight-b.height-12));
+  const left=Math.max(12,Math.min(r.left+(r.width-b.width)/2,innerWidth-b.width-12));
+  tip.style.top=top+"px";tip.style.left=left+"px";
+ });
 }
-$("#guide-next").addEventListener("click",closeGuide);
+function closeGuide(){
+ const tip=$("#guide-tip");
+ if(tip){tip.classList.remove("visible");tip.setAttribute("aria-hidden","true");}
+ $$(".guide-highlight").forEach(el=>el.classList.remove("guide-highlight"));
+ if(activeTourPage)sessionStorage.setItem("nabeeh_guide_"+activeTourPage,"1");
+ activeTour=[];activeTourIndex=0;activeTourPage="";
+}
+$("#guide-next").addEventListener("click",()=>{if(activeTourIndex<activeTour.length-1){activeTourIndex++;renderGuideStep();}else closeGuide();});
 $("#guide-skip").addEventListener("click",closeGuide);
-
-function goToPage(page, withGuide=true) {
-  if (!$("#page-" + page)) return;
-  currentPage = page;
-  $$(".page").forEach(el => el.classList.toggle("active",el.id === "page-" + page));
-  $$(".nav-link").forEach(el => el.classList.toggle("active",el.dataset.page === page));
-  const key = pageHeadings[page];
-  $("#page-heading").textContent = key ? translations[currentLanguage][key] : "Nabeeh";
-  window.scrollTo({top:0,behavior:"smooth"});
-  if (page === "saved") renderSaved();
-  if (page === "trends") loadHealthTrends();
-  if (page === "history") renderHistory();
-  if (withGuide) showGuide(page);
-}
-$$("[data-page]").forEach(button => button.addEventListener("click",() => goToPage(button.dataset.page)));
-
+window.addEventListener("resize",()=>{if(activeTour.length)renderGuideStep();});
 function escapeHTML(value="") {
   return String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char]));
 }
@@ -207,9 +212,10 @@ $$("[data-trend-filter]").forEach(button=>button.addEventListener("click",()=>{
 // Account form is a UI prototype only; never store passwords or Nafath credentials in the browser.
 $("#open-login").addEventListener("click",()=>{
   $("#login-modal").classList.add("open");
+  $("#login-modal").style.display = "flex";
   $("#login-modal").setAttribute("aria-hidden","false");
 });
-function closeLogin(){ $("#login-modal").classList.remove("open");$("#login-modal").setAttribute("aria-hidden","true"); }
+function closeLogin(){ $("#login-modal").classList.remove("open");$("#login-modal").style.display = "";$("#login-modal").setAttribute("aria-hidden","true"); }
 $("#close-login").addEventListener("click",closeLogin);
 $("#login-modal").addEventListener("click",e=>{if(e.target.id==="login-modal")closeLogin();});
 $$("[data-auth-tab]").forEach(tab=>tab.addEventListener("click",()=>{
