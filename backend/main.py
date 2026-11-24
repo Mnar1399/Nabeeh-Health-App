@@ -74,6 +74,33 @@ def get_article(article_id: int):
 
 
 # Get available health categories
+@app.get("/trends")
+def get_health_trends():
+    """Return recent health items collected from the configured official RSS feeds."""
+    connection = get_connection()
+    try:
+        rows = connection.execute("""
+            SELECT
+                a.id,
+                a.title,
+                a.content,
+                a.url,
+                a.language,
+                a.scraped_at,
+                s.name AS source_name
+            FROM articles AS a
+            JOIN sources AS s ON s.id = a.source_id
+            WHERE s.base_url LIKE '%moh.gov.sa%'
+              AND a.content IS NOT NULL
+              AND length(trim(a.content)) > 40
+            ORDER BY a.scraped_at DESC, a.id DESC
+            LIMIT 30
+        """).fetchall()
+        return [dict(row) for row in rows]
+    finally:
+        connection.close()
+
+
 @app.get("/categories")
 def get_categories():
     connection = get_connection()
