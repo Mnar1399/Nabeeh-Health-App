@@ -80,7 +80,7 @@ def collect_rss():
                     title,
                     summary[:3000],
                     link,
-                    "ar" if any("\\u0600" <= char <= "\\u06FF" for char in title) else "en",
+                    "ar" if any("\u0600" <= char <= "\u06FF" for char in title) else "en",
                     "محتوى صحي",
                     content_hash,
                     "pending"
