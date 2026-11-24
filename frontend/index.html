@@ -4,150 +4,106 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#5C0F22" />
-  <title>نبيه | تحقق من المعلومة الصحية</title>
+  <title>نبيه | صحتك تبدأ من المعلومة</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="app-shell">
-    <header class="site-header">
-      <button class="login-icon" id="open-login" aria-label="تسجيل الدخول" title="تسجيل الدخول"><span>♙</span><small>تسجيل الدخول</small></button>
-      <a class="brand" href="#" data-page="home" aria-label="نبيه - الرئيسية">
-        <span class="brand-mark">ن</span><span><strong>نبيه</strong><small>صحتك تبدأ من المعلومة</small></span>
-      </a>
-      <nav class="main-nav" aria-label="القائمة الرئيسية">
-        <button class="nav-link active" data-page="home"><span class="nav-icon">⌂</span> الرئيسية</button>
-        <button class="nav-link" data-page="how"><span class="nav-icon">✦</span> كيف يعمل</button>
-        <button class="nav-link" data-page="verify"><span class="nav-icon">⌕</span> تحقق من معلومة</button>
-        <button class="nav-link" data-page="history"><span class="nav-icon">◷</span> سجل التحققات</button>
-        <button class="nav-link" data-page="plans"><span class="nav-icon">♧</span> الاشتراكات</button>
-        <button class="nav-link" data-page="saved"><span class="nav-icon">♡</span> المحفوظات</button>
-      </nav>
-    </header>
-    <main class="main-content">
-      <div class="page-heading-bar"><div><span class="eyebrow">منصة التحقق الصحي</span><h1 id="page-heading">مرحبًا بك في نبيه</h1></div><span class="trust-note"><span>✦</span> معلومة موثوقة، قرار أوعى</span></div>
+<div class="app-shell">
+  <header class="site-header">
+    <button class="login-icon" id="open-login" aria-label="تسجيل الدخول"><span>♙</span><small data-i18n="login">تسجيل الدخول</small></button>
+    <a class="brand" href="#" data-page="home"><span class="brand-mark">ن</span><span><strong>نبيه</strong><small data-i18n="tagline">صحتك تبدأ من المعلومة</small></span></a>
+    <nav class="main-nav" aria-label="القائمة الرئيسية">
+      <button class="nav-link active" data-page="home"><span class="nav-icon">⌂</span><span data-i18n="home">الرئيسية</span></button>
+      <button class="nav-link" data-page="trends"><span class="nav-icon">↗</span><span data-i18n="trends">ترندات الصحة</span></button>
+      <button class="nav-link" data-page="verify"><span class="nav-icon">⌕</span><span data-i18n="verify">تحقق من معلومة</span></button>
+      <button class="nav-link" data-page="history"><span class="nav-icon">◷</span><span data-i18n="history">سجل التحققات</span></button>
+      <button class="nav-link" data-page="plans"><span class="nav-icon">♧</span><span data-i18n="plans">الاشتراكات</span></button>
+      <button class="nav-link" data-page="saved"><span class="nav-icon">♡</span><span data-i18n="saved">المحفوظات</span></button>
+      <button class="nav-link" data-page="profile"><span class="nav-icon">◎</span><span data-i18n="profile">ملفي الصحي</span></button>
+    </nav>
+    <button class="language-button" id="language-toggle" type="button"><span>文</span><b>EN</b></button>
+  </header>
 
-      <section id="page-home" class="page active">
-        <section class="hero">
-          <div class="hero-copy">
-            <span class="hero-kicker"><span class="pulse"></span> معلومة موثوقة، قرار أوعى</span>
-            <h2>لا تصدّق كل ما<br><em>يُقال عن صحتك.</em></h2>
-            <p>وصلتك معلومة صحية وما تدري إذا كانت صحيحة؟ اكتبها في نبيه، وابدأ رحلة التحقق من مصادر موثوقة.</p>
-            <button class="hero-button" data-page="verify">تحقق من معلومة الآن <span>←</span></button>
-          </div>
-          <div class="hero-art" aria-hidden="true">
-            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-            <div class="hero-emblem"><span>ن</span><i>✦</i></div>
-            <div class="float-card card-check"><b>✓</b><span>تحقق أولًا</span></div>
-            <div class="float-card card-source"><b>✧</b><span>مصادر موثوقة</span></div>
-          </div>
-        </section>
-
-        <section class="quick-stats" aria-label="معلومات المنصة">
-          <div class="stat"><span class="stat-icon">▤</span><div><strong id="articles-count">—</strong><small>مادة صحية متاحة</small></div></div>
-          <div class="stat"><span class="stat-icon">⌕</span><div><strong>مصادر موثوقة</strong><small>نبدأ بوزارة الصحة السعودية</small></div></div>
-          <div class="stat"><span class="stat-icon">♡</span><div><strong>وعي صحي</strong><small>شارك المعلومة بمسؤولية</small></div></div>
-        </section>
-
-        <section class="content-section">
-          <div class="section-heading">
-            <div><span class="eyebrow">اقرأ وتعرّف</span><h2>محتوى صحي موثوق</h2><p>معلومات صحية جُمعت من مصادرها الأصلية.</p></div>
-            <button class="text-button" id="show-all">عرض الكل <span>←</span></button>
-          </div>
-          <div class="filter-row" id="category-filters">
-            <button class="filter-chip active" data-category="all">الكل</button>
-          </div>
-          <div id="articles-grid" class="articles-grid">
-            <div class="loading-card"><span class="spinner"></span><p>جاري تحميل المحتوى الصحي...</p></div>
-          </div>
-          <p id="articles-message" class="inline-message" role="status"></p>
-        </section>
-
-        <section class="source-strip">
-          <div class="source-seal">✓</div>
-          <div><strong>المصدر يصنع الفرق</strong><p>ارجع دائمًا إلى الجهات الصحية الرسمية عند البحث عن معلومة طبية.</p></div>
-          <span class="source-label">وزارة الصحة السعودية</span>
-        </section>
-      </section>
-
-      <section id="page-verify" class="page">
-        <div class="inner-page">
-          <button class="back-link" data-page="home">→ العودة للرئيسية</button>
-          <div class="page-intro"><span class="eyebrow">تحقق قبل أن تشارك</span><h2>هل هذه المعلومة <em>صحيحة؟</em></h2><p>اكتب الادعاء الصحي كما وصلك، وسنساعدك في الوصول إلى المعلومات والمصادر ذات الصلة.</p></div>
-          <div class="verify-layout">
-            <div class="verify-card">
-              <label for="claim-input">اكتب المعلومة الصحية</label>
-              <textarea id="claim-input" maxlength="1000" placeholder="مثال: شرب الماء الدافئ على الريق يعالج جميع مشاكل المعدة..."></textarea>
-              <div class="input-meta"><span>لا تضف معلومات شخصية أو بيانات طبية خاصة.</span><span id="char-count">0 / 1000</span></div>
-              <button id="check-claim" class="primary-button">ابدأ التحقق <span>←</span></button>
-              <p id="verify-feedback" class="form-feedback" role="status">هذه النسخة تعرض واجهة التحقق. سيتم تفعيل نتيجة الذكاء الاصطناعي بعد ربط خدمة التحقق.</p>
-            </div>
-            <aside class="how-card"><span class="how-icon">✦</span><h3>كيف يعمل نبيه؟</h3><ol><li><b>أرسل الادعاء</b><span>اكتب المعلومة التي تريد التحقق منها.</span></li><li><b>ابحث في المصادر</b><span>تتم مقارنة الادعاء بالمعلومات الصحية الموثوقة.</span></li><li><b>افهم النتيجة</b><span>تعرّف على التفسير والمراجع قبل مشاركة المعلومة.</span></li></ol><div class="disclaimer">نبيه أداة توعوية ولا يُعد بديلًا عن استشارة الطبيب.</div></aside>
-          </div>
+  <main class="main-content">
+    <section id="page-home" class="page active">
+      <section class="home-hero">
+        <div class="home-hero-copy">
+          <span class="hero-kicker"><span class="pulse"></span><span data-i18n="heroKicker">منصة التحقق من المعلومات الصحية</span></span>
+          <h1 data-i18n="heroTitle">لا تصدّق كل ما يُقال عن صحتك.</h1>
+          <p data-i18n="heroText">قبل ما تتبع نصيحة أو تشارك معلومة صحية، خلّ نبيه يساعدك تتحقق منها بالرجوع إلى مصادر موثوقة.</p>
+          <button class="hero-button" data-page="verify"><span data-i18n="heroButton">تحقق من المعلومة الآن</span><b>←</b></button>
+        </div>
+        <div class="health-visual" role="img" aria-label="رسم توضيحي للصحة والوقاية">
+          <svg viewBox="0 0 560 430" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs><linearGradient id="heart" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8B344B"/><stop offset="1" stop-color="#5C0F22"/></linearGradient><linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#A6B59A"/><stop offset="1" stop-color="#55775E"/></linearGradient></defs>
+            <circle cx="285" cy="215" r="172" fill="#E9DFD2"/><circle cx="285" cy="215" r="137" fill="#F8F3EA"/>
+            <path d="M278 310c-23-24-111-91-111-157 0-42 54-62 85-28l26 29 26-29c31-34 85-14 85 28 0 66-88 133-111 157Z" fill="url(#heart)"/>
+            <path d="M176 211h63l22-45 35 94 25-49h49" fill="none" stroke="#FFF9F0" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M104 103c-5-55 43-79 87-64-5 49-40 77-87 64Z" fill="url(#leaf)"/><path d="M107 102c21-23 44-37 70-49" fill="none" stroke="#F5F2EA" stroke-width="4" stroke-linecap="round"/>
+            <path d="M410 326c7-52 52-70 91-48-9 46-43 69-91 48Z" fill="#A9B99E"/><path d="M415 323c20-20 42-32 68-39" fill="none" stroke="#F5F2EA" stroke-width="4" stroke-linecap="round"/>
+            <g fill="#FFFEFA" stroke="#E5D8CA" stroke-width="2"><rect x="23" y="245" width="116" height="75" rx="17"/><rect x="397" y="65" width="132" height="78" rx="18"/></g>
+            <g fill="#5C0F22"><path d="M68 264h26v7H68zm0 14h38v7H68zm0 14h29v7H68z"/><path d="M440 103h44v7h-44zm0 14h29v7h-29z"/></g>
+            <circle cx="460" cy="88" r="8" fill="#6E9476"/><circle cx="111" cy="263" r="8" fill="#B78B6E"/>
+            <g fill="#6E9476"><circle cx="160" cy="350" r="7"/><circle cx="385" cy="38" r="6"/><circle cx="493" cy="214" r="8"/></g>
+          </svg>
+          <div class="visual-caption"><span>✦</span><div><b data-i18n="visualTitle">وعي صحي يبدأ هنا</b><small data-i18n="visualText">تحقق · افهم · شارك بوعي</small></div></div>
         </div>
       </section>
-
-      <section id="page-how" class="page">
-        <div class="inner-page">
-          <div class="page-intro"><span class="eyebrow">من المعلومة إلى الوعي</span><h2>كيف يعمل <em>نبيه؟</em></h2><p>خطوات واضحة تساعدك على فهم المعلومة الصحية والرجوع إلى مصدرها.</p></div>
-          <div class="how-steps-grid">
-            <article class="how-step-card"><span>01</span><div class="step-symbol">✎</div><h3>أرسل المعلومة</h3><p>انسخ الادعاء الصحي الذي وصلك أو اكتب السؤال الذي تريد التحقق منه.</p></article>
-            <article class="how-step-card"><span>02</span><div class="step-symbol">⌕</div><h3>نراجع المصادر</h3><p>نبحث في المحتوى الصحي المتاح من الجهات الموثوقة ونقارن ما ورد فيه بالادعاء.</p></article>
-            <article class="how-step-card"><span>03</span><div class="step-symbol">✓</div><h3>افهم النتيجة</h3><p>تعرّف على خلاصة مبسطة، وسبب النتيجة، وروابط المصادر للرجوع إليها.</p></article>
-          </div>
-          <div class="how-note"><strong>هدف نبيه هو رفع الوعي الصحي.</strong><p>لا يقدم نبيه تشخيصًا أو علاجًا، ولا يغني عن استشارة المختصين.</p><button class="primary-button" data-page="verify">جرّب التحقق الآن ←</button></div>
-        </div>
-      </section>
-
-      <section id="page-plans" class="page">
-        <div class="inner-page">
-          <div class="page-intro"><span class="eyebrow">عضويتك في نبيه</span><h2>اختر العضوية <em>المناسبة لك</em></h2><p>ابدأ مجانًا، ويمكنك الانتقال إلى مزايا أوسع عند الحاجة.</p></div>
-          <div class="plans-grid">
-            <article class="plan-card"><div class="plan-icon">♧</div><span class="plan-label">للبداية</span><h3>المجانية</h3><div class="plan-price">مجانًا</div><p>للاستخدام الأساسي والتعرّف على نبيه.</p><ul><li>الوصول إلى المحتوى الصحي المنشور</li><li>عدد محدود من طلبات التحقق</li><li>عرض المصادر المرتبطة</li></ul><button class="plan-button secondary" data-plan="المجانية">ابدأ مجانًا</button></article>
-            <article class="plan-card featured"><div class="plan-icon">✦</div><span class="plan-label">الأكثر مرونة</span><h3>المتوسطة</h3><div class="plan-price">قريبًا</div><p>لمن يحتاج إلى استخدام نبيه بشكل متكرر.</p><ul><li>عدد أكبر من طلبات التحقق</li><li>ملخصات وتوضيحات موسعة</li><li>حفظ سجل التحققات</li></ul><button class="plan-button" data-plan="المتوسطة">اختر العضوية</button></article>
-            <article class="plan-card"><div class="plan-icon">✧</div><span class="plan-label">تجربة متكاملة</span><h3>المميزة</h3><div class="plan-price">قريبًا</div><p>مزايا أوسع وتجربة أكثر شمولًا.</p><ul><li>حدود استخدام أعلى</li><li>مزايا متقدمة عند توفرها</li><li>أولوية في الوصول للخصائص الجديدة</li></ul><button class="plan-button secondary" data-plan="المميزة">اختر العضوية</button></article>
-          </div>
-          <p class="plans-disclaimer">العضويات والأسعار النهائية قيد التحديد. الأزرار حاليًا لعرض التصميم فقط، ولا تتم أي عملية دفع.</p>
-        </div>
-      </section>
-
-      <section id="page-history" class="page">
-        <div class="inner-page">
-          <div class="page-intro"><span class="eyebrow">رحلتك مع نبيه</span><h2>سجل <em>التحققات</em></h2><p>ارجع إلى المعلومات التي طلبت التحقق منها سابقًا.</p></div>
-          <div class="history-empty"><div class="history-empty-icon">◷</div><h3>سيظهر سجل تحققاتك هنا</h3><p>عند تفعيل الحسابات، سيُحفظ كل تحقق داخل حسابك لتتمكن من الرجوع إليه في أي وقت.</p><button class="primary-button" data-page="verify">تحقق من معلومة جديدة</button></div>
-        </div>
-      </section>
-
-      <section id="page-article" class="page">
-        <div class="inner-page">
-          <button class="back-link" data-page="home">→ العودة للمحتوى الصحي</button>
-          <article id="article-detail" class="article-detail"></article>
-        </div>
-      </section>
-
-      <section id="page-saved" class="page">
-        <div class="inner-page">
-          <div class="page-intro"><span class="eyebrow">احتفظ بما يهمك</span><h2>المحفوظات</h2><p>المواد الصحية التي حفظتها للرجوع إليها لاحقًا.</p></div>
-          <div id="saved-grid" class="articles-grid"></div>
-          <p id="saved-empty" class="empty-state">لم تحفظ أي مادة بعد. يمكنك حفظ المقالات من بطاقة المحتوى.</p>
-        </div>
-      </section>
-
-      <footer class="mobile-footer">نبيه © 2026 <span>صحتك تبدأ من المعلومة</span></footer>
-    </main>
-  </div>
-  <div id="login-modal" class="modal-backdrop" aria-hidden="true">
-    <section class="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-title">
-      <button class="modal-close" id="close-login" aria-label="إغلاق">×</button>
-      <div class="login-mark">ن</div><span class="eyebrow">مرحبًا بعودتك</span><h2 id="login-title">تسجيل الدخول إلى نبيه</h2>
-      <p>ادخل إلى حسابك للوصول إلى محفوظاتك وسجل تحققاتك.</p>
-      <form id="login-form"><label for="login-email">البريد الإلكتروني</label><input id="login-email" type="email" placeholder="name@example.com" autocomplete="email" required><label for="login-password">كلمة المرور</label><input id="login-password" type="password" placeholder="أدخل كلمة المرور" autocomplete="current-password" required><button class="primary-button" type="submit">تسجيل الدخول</button><button type="button" class="auth-switch" id="show-signup">إنشاء حساب جديد</button></form>
-      <p class="login-hint" id="login-hint">واجهة تسجيل الدخول جاهزة تصميميًا؛ تفعيل الحسابات والتحقق من كلمات المرور يحتاج إلى ربط نظام مصادقة آمن.</p>
     </section>
-  </div>
-  <div id="toast" class="toast" role="status"></div>
-  <script src="app.js"></script>
-</body>
-</html>
+
+    <section id="page-trends" class="page">
+      <div class="inner-page">
+        <div class="page-intro"><span class="eyebrow" data-i18n="trendsEyebrow">المتداول في عالم الصحة</span><h1 data-i18n="trendsTitle">ترندات الصحة والشائعات</h1><p data-i18n="trendsText">تعرّف على المواضيع الصحية المنتشرة، وافهم ما تقوله المصادر عنها.</p></div>
+        <div class="trend-filters"><button class="filter-chip active" data-trend-filter="all">الكل</button><button class="filter-chip" data-trend-filter="nutrition">التغذية</button><button class="filter-chip" data-trend-filter="fitness">اللياقة</button><button class="filter-chip" data-trend-filter="rumors">شائعات صحية</button></div>
+        <div id="trends-grid" class="trends-grid">
+          <article class="trend-card"><div class="trend-icon">🥗</div><span class="trend-tag">التغذية · مثال توضيحي</span><h2>نظام الطيبات</h2><p>ما حقيقة الادعاءات المتداولة حول هذا النظام؟ تعرّف على ما يحتاج إلى تحقق قبل اتباعه.</p><div class="trend-bottom"><span class="verdict pending">قيد المراجعة</span><button class="text-button" data-page="verify">تحقق من الادعاء ←</button></div></article>
+          <article class="trend-card"><div class="trend-icon">🧃</div><span class="trend-tag">تغذية · مثال توضيحي</span><h2>مشروبات الديتوكس</h2><p>هل الادعاءات الشائعة حول تنظيف الجسم مثبتة؟ نحتاج إلى عرض الأدلة والمصادر.</p><div class="trend-bottom"><span class="verdict pending">قيد المراجعة</span><button class="text-button" data-page="verify">تحقق من الادعاء ←</button></div></article>
+          <article class="trend-card"><div class="trend-icon">🏃</div><span class="trend-tag">لياقة · مثال توضيحي</span><h2>المشي بعد الأكل</h2><p>موضوع صحي متداول؛ ستظهر هنا خلاصة التحقق مع المصادر عند مراجعة الادعاء.</p><div class="trend-bottom"><span class="verdict pending">قيد المراجعة</span><button class="text-button" data-page="verify">تحقق من الادعاء ←</button></div></article>
+        </div>
+        <p class="trend-disclaimer">هذه بطاقات توضيحية لتصميم الصفحة وليست أحكامًا طبية أو نتائج تحقق منشورة. لن نعرض أي ادعاء كحقيقة قبل مراجعته بمصادر موثوقة.</p>
+      </div>
+    </section>
+
+    <section id="page-verify" class="page">
+      <div class="inner-page">
+        <div class="page-intro"><span class="eyebrow">مساعد نبيه الصحي</span><h1>اسأل نبيه عن معلومة صحية</h1><p>اكتب الادعاء أو السؤال، وسيكون مكان المحادثة ونتيجة التحقق هنا.</p></div>
+        <div class="chat-shell">
+          <div class="chat-top"><div class="chat-avatar">ن</div><div><b>مساعد نبيه</b><small>مساعد التحقق الصحي</small></div><span class="online-dot"></span></div>
+          <div class="chat-messages" id="chat-messages"><div class="bot-message"><b>مرحبًا! أنا نبيه.</b><p>اكتب المعلومة الصحية التي تريد التحقق منها، وسأساعدك على مراجعتها وفهم مصادرها.</p></div></div>
+          <div class="chat-compose"><textarea id="claim-input" maxlength="1000" placeholder="اكتب المعلومة أو الشائعة الصحية هنا..."></textarea><button id="check-claim" aria-label="إرسال السؤال">➤</button></div>
+          <div class="chat-footnote">لا تشارك معلومات شخصية أو تفاصيل طبية حساسة. هذه الواجهة لا تصدر حكمًا صحيًا آليًا بعد.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-history" class="page"><div class="inner-page"><div class="page-intro"><span class="eyebrow">رحلتك مع نبيه</span><h1>سجل التحققات</h1><p>الأسئلة والادعاءات التي تحققت منها سابقًا.</p></div><div id="history-list" class="history-list"><div class="empty-panel"><div class="empty-icon">◷</div><h2>لا يوجد سجل بعد</h2><p>بعد تفعيل الحسابات، سيُحفظ سجل تحققاتك بشكل خاص داخل حسابك.</p></div></div></div></section>
+
+    <section id="page-plans" class="page"><div class="inner-page"><div class="page-intro"><span class="eyebrow">عضويتك في نبيه</span><h1>اختر العضوية المناسبة لك</h1><p>ابدأ مجانًا، ويمكنك الانتقال إلى مزايا أوسع لاحقًا.</p></div><div class="plans-grid">
+      <article class="plan-card"><div class="plan-icon">♧</div><span class="plan-label">للبداية</span><h2>المجانية</h2><div class="plan-price">مجانًا</div><p>للاستخدام الأساسي والتعرّف على نبيه.</p><ul><li>الوصول إلى المحتوى الصحي</li><li>ثلاث عمليات تحقق مبدئيًا</li><li>عرض المصادر المرتبطة</li></ul><button class="plan-button secondary" data-plan="المجانية">ابدأ مجانًا</button></article>
+      <article class="plan-card featured"><div class="plan-icon">✦</div><span class="plan-label">الأكثر مرونة</span><h2>المتوسطة</h2><div class="plan-price">قريبًا</div><p>لمن يحتاج إلى استخدام نبيه بشكل متكرر.</p><ul><li>عدد أكبر من عمليات التحقق</li><li>ملخصات وتوضيحات موسعة</li><li>سجل التحققات والمحفوظات</li></ul><button class="plan-button" data-plan="المتوسطة">قريبًا</button></article>
+      <article class="plan-card"><div class="plan-icon">✧</div><span class="plan-label">تجربة متكاملة</span><h2>المميزة</h2><div class="plan-price">قريبًا</div><p>مزايا أوسع وتجربة أكثر شمولًا.</p><ul><li>حدود استخدام أعلى</li><li>خصائص متقدمة</li><li>مزايا إضافية مستقبلًا</li></ul><button class="plan-button secondary" data-plan="المميزة">قريبًا</button></article>
+    </div><p class="plans-disclaimer">الأسعار النهائية وحدود الباقات قيد التحديد. لا توجد عمليات دفع مفعّلة حاليًا.</p></div></section>
+
+    <section id="page-saved" class="page"><div class="inner-page"><div class="page-intro"><span class="eyebrow">احتفظ بما يهمك</span><h1>المحفوظات</h1><p>المقالات والمواضيع التي حفظتها للرجوع إليها.</p></div><div id="saved-grid" class="articles-grid"></div><p id="saved-empty" class="empty-state">لم تحفظ أي مادة بعد.</p></div></section>
+
+    <section id="page-profile" class="page"><div class="inner-page"><div class="page-intro"><span class="eyebrow">ملفك الصحي الشخصي</span><h1>معلوماتك الصحية</h1><p>أضف المعلومات التي ترغب باستخدامها لتخصيص المحتوى والاتجاهات الصحية المعروضة لك. جميع الحقول اختيارية.</p></div>
+      <div class="profile-layout"><section class="profile-card"><div class="profile-card-head"><div class="profile-avatar">◎</div><div><h2>بياناتك الصحية</h2><p>يمكنك تعديلها أو تركها فارغة متى شئت.</p></div></div>
+        <form id="health-profile-form" class="health-form"><label>العمر <input type="number" min="1" max="120" name="age" placeholder="مثال: 25"></label><label>الوزن (كجم) <input type="number" min="1" max="400" step="0.1" name="weight" placeholder="مثال: 65"></label><label>الطول (سم) <input type="number" min="30" max="250" name="height" placeholder="مثال: 165"></label><label>مستوى النشاط <select name="activity"><option value="">اختر (اختياري)</option><option>قليل الحركة</option><option>نشاط خفيف</option><option>نشاط متوسط</option><option>نشاط مرتفع</option></select></label><label class="full-field">اهتماماتك الصحية <select name="interest"><option value="">اختر اهتمامًا</option><option>التغذية</option><option>اللياقة والنشاط البدني</option><option>النوم</option><option>الصحة العامة</option></select></label><button class="primary-button" type="submit">حفظ المعلومات على هذا الجهاز</button></form>
+        <p class="privacy-note">تنبيه الخصوصية: هذه نسخة أولية تحفظ البيانات على هذا الجهاز فقط. لا تدخل تشخيصات أو معلومات طبية حساسة. الحفظ الآمن المرتبط بحسابك يحتاج إلى نظام حسابات وموافقة واضحة.</p>
+      </section>
+      <aside class="nafath-card"><div class="nafath-mark">نفاذ</div><h2>الدخول عبر نفاذ</h2><p>يمكن ربط الهوية الرقمية لاحقًا بعد الحصول على صلاحية التكامل الرسمية. لا تدخل رقم الهوية أو كلمة مرور نفاذ في هذا الموقع.</p><button id="nafath-button" class="nafath-button" type="button">التكامل مع نفاذ غير مفعّل بعد</button><span class="secure-note">لا يوجد اتصال حاليًا بمنصة نفاذ.</span></aside></div>
+    </div></section>
+  </main>
+</div>
+
+<div id="login-modal" class="modal-backdrop" aria-hidden="true"><section class="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-title"><button class="modal-close" id="close-login" aria-label="إغلاق">×</button><div class="login-mark">ن</div><span class="eyebrow">حساب نبيه</span><h2 id="login-title">تسجيل الدخول</h2><p id="auth-description">ادخل باستخدام بريدك الإلكتروني، أو أنشئ حسابًا جديدًا.</p><div class="auth-tabs"><button class="active" data-auth-tab="email">البريد الإلكتروني</button><button data-auth-tab="nafath">نفاذ</button></div>
+<form id="login-form"><label id="auth-name-label" class="hidden-field">الاسم<input id="auth-name" type="text" autocomplete="name" placeholder="الاسم الكامل"></label><label id="auth-phone-label" class="hidden-field">رقم الجوال<input id="auth-phone" type="tel" autocomplete="tel" placeholder="05xxxxxxxx"></label><label>البريد الإلكتروني<input id="login-email" type="email" placeholder="name@example.com" autocomplete="email" required></label><label>كلمة المرور<input id="login-password" type="password" placeholder="كلمة المرور" autocomplete="current-password" required></label><button class="primary-button" id="auth-submit" type="submit">تسجيل الدخول</button><button type="button" class="auth-switch" id="show-signup">إنشاء حساب جديد</button></form>
+<div id="nafath-auth-panel" class="nafath-auth-panel hidden-field"><div class="nafath-mark">نفاذ</div><p>يتطلب تسجيل الدخول عبر نفاذ تكاملًا رسميًا مع مزود الخدمة. هذه الخاصية غير مفعّلة في النسخة الحالية.</p></div><p class="login-hint" id="login-hint">لن يتم حفظ بيانات الدخول قبل ربط نظام مصادقة آمن.</p></section></div>
+
+<div id="page-guide" class="guide-backdrop" aria-hidden="true"><section class="guide-card"><div class="guide-progress" id="guide-progress"></div><span class="eyebrow">دليل نبيه</span><div class="guide-icon" id="guide-icon">✦</div><h2 id="guide-title">مرحبًا بك في نبيه</h2><p id="guide-text">تعرف على هذه الصفحة قبل البدء.</p><div class="guide-actions"><button id="guide-skip" class="guide-skip">تخطي</button><button id="guide-next" class="primary-button">التالي</button></div></section></div>
+<div id="toast" class="toast" role="status"></div>
+<script src="app.js"></script>
+</body></html>
