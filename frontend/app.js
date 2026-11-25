@@ -13,7 +13,7 @@ let historyDraft = [];
 
 const translations = {
   en: {
-    login:"Sign in", tagline:"Your health starts with knowledge", home:"Home", trends:"Health trends", verify:"Check a claim", history:"Check history", plans:"Memberships", saved:"Saved", profile:"Health profile",
+    login:"Sign in", tagline:"Your health starts with knowledge", home:"Home", trends:"Health trends", verify:"Check a claim", history:"Submit a rumor or news", plans:"Memberships", saved:"Saved", profile:"Health profile",
     heroKicker:"Health information fact-checking platform", heroTitle:"Don't believe everything you hear about your health.", heroText:"Before following advice or sharing a health claim, let Nabeeh help you review it against reliable sources.", heroButton:"Check a health claim now", visualTitle:"Health awareness starts here", visualText:"Check · Understand · Share responsibly",
     trendsEyebrow:"What's circulating in health", trendsTitle:"Health trends and rumors", trendsText:"Explore popular health topics and understand what reliable sources say.",
     chatTitle:"Ask Nabeeh about a health claim", chatText:"Write a claim or question. The conversation and verification result will appear here.",
@@ -22,7 +22,7 @@ const translations = {
     claimPlaceholder:"Write a health claim or rumor...", send:"Send", profileSave:"Save on this device", language:"عربي"
   },
   ar: {
-    login:"تسجيل الدخول", tagline:"صحتك تبدأ من المعلومة", home:"الرئيسية", trends:"ترندات الصحة", verify:"تحقق من معلومة", history:"سجل التحققات", plans:"الاشتراكات", saved:"المحفوظات", profile:"ملفي الصحي",
+    login:"تسجيل الدخول", tagline:"صحتك تبدأ من المعلومة", home:"الرئيسية", trends:"ترندات الصحة", verify:"تحقق من معلومة", history:"رفع إشاعة أو خبر", plans:"الاشتراكات", saved:"المحفوظات", profile:"ملفي الصحي",
     heroKicker:"منصة التحقق من المعلومات الصحية", heroTitle:"لا تصدّق كل ما يُقال عن صحتك.", heroText:"قبل ما تتبع نصيحة أو تشارك معلومة صحية، خلّ نبيه يساعدك تتحقق منها بالرجوع إلى مصادر موثوقة.", heroButton:"تحقق من المعلومة الآن", visualTitle:"وعي صحي يبدأ هنا", visualText:"تحقق · افهم · شارك بوعي",
     trendsEyebrow:"المتداول في عالم الصحة", trendsTitle:"ترندات الصحة والشائعات", trendsText:"تعرّف على المواضيع الصحية المنتشرة، وافهم ما تقوله المصادر عنها.",
     chatTitle:"اسأل نبيه عن معلومة صحية", chatText:"اكتب الادعاء أو السؤال، وستظهر المحادثة ونتيجة التحقق هنا.",
