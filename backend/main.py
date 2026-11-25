@@ -127,19 +127,6 @@ def create_submission(payload: SubmissionPayload):
         connection.close()
 
 
-@app.get("/submissions")
-def list_submissions():
-    connection = get_connection()
-    try:
-        rows = connection.execute("""
-            SELECT id, claim, platform, source_url, status, created_at
-            FROM submissions ORDER BY id DESC LIMIT 100
-        """).fetchall()
-        return [dict(row) for row in rows]
-    finally:
-        connection.close()
-
-
 @app.get("/categories")
 def get_categories():
     connection = get_connection()
