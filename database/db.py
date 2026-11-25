@@ -47,6 +47,19 @@ def create_tables():
     """)
 
     connection.commit()
+
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS submissions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            claim TEXT NOT NULL,
+            platform TEXT NOT NULL,
+            source_url TEXT,
+            image_data TEXT,
+            status TEXT DEFAULT 'pending',
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
     connection.close()
 
 
