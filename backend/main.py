@@ -4,6 +4,8 @@ from database.db import get_connection, create_tables
 from pathlib import Path
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel, Field
+from typing import Optional
 
 app = FastAPI(
     title="Nabeeh API",
@@ -95,6 +97,40 @@ def get_health_trends():
               AND length(trim(a.content)) > 40
             ORDER BY a.scraped_at DESC, a.id DESC
             LIMIT 30
+        """).fetchall()
+        return [dict(row) for row in rows]
+    finally:
+        connection.close()
+
+
+class SubmissionPayload(BaseModel):
+    claim: str = Field(min_length=5, max_length=3000)
+    platform: str = Field(min_length=2, max_length=40)
+    source_url: Optional[str] = Field(default=None, max_length=2000)
+    image_data: Optional[str] = Field(default=None, max_length=5_000_000)
+
+
+@app.post("/submissions")
+def create_submission(payload: SubmissionPayload):
+    connection = get_connection()
+    try:
+        cursor = connection.execute("""
+            INSERT INTO submissions (claim, platform, source_url, image_data)
+            VALUES (?, ?, ?, ?)
+        """, (payload.claim, payload.platform, payload.source_url, payload.image_data))
+        connection.commit()
+        return {"id": cursor.lastrowid, "status": "pending", "message": "تم استلام البلاغ"}
+    finally:
+        connection.close()
+
+
+@app.get("/submissions")
+def list_submissions():
+    connection = get_connection()
+    try:
+        rows = connection.execute("""
+            SELECT id, claim, platform, source_url, status, created_at
+            FROM submissions ORDER BY id DESC LIMIT 100
         """).fetchall()
         return [dict(row) for row in rows]
     finally:
