@@ -44,9 +44,9 @@ def get_articles():
                 s.name AS source_name
             FROM articles AS a
             LEFT JOIN sources AS s ON s.id = a.source_id
-            WHERE content IS NOT NULL
-            AND length(trim(content)) > 50
-            ORDER BY id DESC
+            WHERE a.content IS NOT NULL
+            AND length(trim(a.content)) > 50
+            ORDER BY a.id DESC
         """).fetchall()
 
         return [dict(article) for article in articles]
