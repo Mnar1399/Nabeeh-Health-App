@@ -19,7 +19,7 @@
       <button class="nav-link active" data-page="home"><span class="nav-icon">⌂</span><span data-i18n="home">الرئيسية</span></button>
       <button class="nav-link" data-page="trends"><span class="nav-icon">↗</span><span data-i18n="trends">ترندات الصحة</span></button>
       <button class="nav-link" data-page="verify"><span class="nav-icon">⌕</span><span data-i18n="verify">تحقق من معلومة</span></button>
-      <button class="nav-link" data-page="history"><span class="nav-icon">◷</span><span data-i18n="history">سجل التحققات</span></button>
+      <button class="nav-link" data-page="history"><span class="nav-icon">◷</span><span data-i18n="history">رفع إشاعة أو خبر</span></button>
       <button class="nav-link" data-page="plans"><span class="nav-icon">♧</span><span data-i18n="plans">الاشتراكات</span></button>
       <button class="nav-link" data-page="saved"><span class="nav-icon">♡</span><span data-i18n="saved">المحفوظات</span></button>
       <button class="nav-link" data-page="profile"><span class="nav-icon">◎</span><span data-i18n="profile">ملفي الصحي</span></button>
@@ -29,30 +29,14 @@
 
   <main class="main-content">
     <section id="page-home" class="page active">
-      <section class="home-hero">
-        <div class="home-hero-copy">
-          <span class="hero-kicker"><span class="pulse"></span><span data-i18n="heroKicker">منصة التحقق من المعلومات الصحية</span></span>
-          <h1 data-i18n="heroTitle">لا تصدّق كل ما يُقال عن صحتك.</h1>
-          <p data-i18n="heroText">قبل ما تتبع نصيحة أو تشارك معلومة صحية، خلّ نبيه يساعدك تتحقق منها بالرجوع إلى مصادر موثوقة.</p>
-          <button class="hero-button" data-page="verify"><span data-i18n="heroButton">تحقق من المعلومة الآن</span><b>←</b></button>
-        </div>
-        <div class="health-visual" role="img" aria-label="رسم توضيحي للصحة والوقاية">
-          <svg viewBox="0 0 560 430" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs><linearGradient id="heart" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8B344B"/><stop offset="1" stop-color="#5C0F22"/></linearGradient><linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#A6B59A"/><stop offset="1" stop-color="#55775E"/></linearGradient></defs>
-            <circle cx="285" cy="215" r="172" fill="#E9DFD2"/><circle cx="285" cy="215" r="137" fill="#F8F3EA"/>
-            <path d="M278 310c-23-24-111-91-111-157 0-42 54-62 85-28l26 29 26-29c31-34 85-14 85 28 0 66-88 133-111 157Z" fill="url(#heart)"/>
-            <path d="M176 211h63l22-45 35 94 25-49h49" fill="none" stroke="#FFF9F0" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M104 103c-5-55 43-79 87-64-5 49-40 77-87 64Z" fill="url(#leaf)"/><path d="M107 102c21-23 44-37 70-49" fill="none" stroke="#F5F2EA" stroke-width="4" stroke-linecap="round"/>
-            <path d="M410 326c7-52 52-70 91-48-9 46-43 69-91 48Z" fill="#A9B99E"/><path d="M415 323c20-20 42-32 68-39" fill="none" stroke="#F5F2EA" stroke-width="4" stroke-linecap="round"/>
-            <g fill="#FFFEFA" stroke="#E5D8CA" stroke-width="2"><rect x="23" y="245" width="116" height="75" rx="17"/><rect x="397" y="65" width="132" height="78" rx="18"/></g>
-            <g fill="#5C0F22"><path d="M68 264h26v7H68zm0 14h38v7H68zm0 14h29v7H68z"/><path d="M440 103h44v7h-44zm0 14h29v7h-29z"/></g>
-            <circle cx="460" cy="88" r="8" fill="#6E9476"/><circle cx="111" cy="263" r="8" fill="#B78B6E"/>
-            <g fill="#6E9476"><circle cx="160" cy="350" r="7"/><circle cx="385" cy="38" r="6"/><circle cx="493" cy="214" r="8"/></g>
-          </svg>
-          <div class="visual-caption"><span>✦</span><div><b data-i18n="visualTitle">وعي صحي يبدأ هنا</b><small data-i18n="visualText">تحقق · افهم · شارك بوعي</small></div></div>
-        </div>
-      </section>
-    </section>
+ <div class="news-page-head"><div><span class="eyebrow">نبيه · الوعي الصحي</span><h1>آخر الأخبار والمعلومات الصحية</h1><p>تابع أحدث المواد الصحية من المصادر الرسمية والموثوقة</p></div><button class="submit-news-shortcut" data-page="history">＋ ارفع إشاعة أو خبر</button></div>
+ <div class="news-filter-wrap" data-guide="home-filters"><div class="news-filter-label">تصفّح حسب التصنيف</div><div class="news-filters">
+ <button class="news-filter active" data-news-filter="all">الكل</button><button class="news-filter" data-news-filter="news">الأخبار</button><button class="news-filter" data-news-filter="nutrition">التغذية</button><button class="news-filter" data-news-filter="medicines">الأدوية</button><button class="news-filter" data-news-filter="fitness">اللياقة</button><button class="news-filter" data-news-filter="general">الصحة العامة</button>
+ </div></div>
+ <div class="news-section-title"><div><h2>مختارات نبيه</h2><p>معلومات صحية وروابط المصادر الأصلية</p></div><span id="articles-count" class="news-count">—</span></div>
+ <div id="articles-grid" class="news-grid" data-guide="home-feed"><div class="loading-card">جاري تحميل الأخبار الصحية...</div></div>
+ <p class="news-disclaimer">المواد المعروضة من مصادرها الأصلية. ظهور الخبر هنا لا يعني أنه خضع للتحقق من صحته.</p>
+ </section>
 
     <section id="page-trends" class="page">
       <div class="inner-page">
@@ -79,7 +63,17 @@
       </div>
     </section>
 
-    <section id="page-history" class="page"><div class="inner-page"><div class="page-intro"><span class="eyebrow">رحلتك مع نبيه</span><h1>سجل التحققات</h1><p>الأسئلة والادعاءات التي تحققت منها سابقًا.</p></div><div id="history-list" class="history-list"><div class="empty-panel"><div class="empty-icon">◷</div><h2>لا يوجد سجل بعد</h2><p>بعد تفعيل الحسابات، سيُحفظ سجل تحققاتك بشكل خاص داخل حسابك.</p></div></div></div></section>
+    <section id="page-history" class="page"><div class="inner-page submit-claim-page">
+ <div class="submit-claim-heading"><span class="eyebrow">ساهم في مكافحة الشائعات الصحية</span><h1>ارفع إشاعة أو خبر</h1><p>شاهدت معلومة صحية وتريد معرفة مدى صحتها؟ أرسلها إلى فريق نبيه.</p></div>
+ <form id="submit-news-form" class="submit-news-form">
+  <label class="form-label" for="submission-claim">نص الادعاء أو الخبر <span>*</span></label><textarea id="submission-claim" name="claim" required maxlength="3000" placeholder="اكتب الادعاء الصحي كما رأيته..."></textarea>
+  <div class="form-label">أين رأيت هذا الادعاء؟ <span>*</span></div><div class="platform-grid">
+   <label><input type="radio" name="platform" value="TikTok" required><span>TikTok</span></label><label><input type="radio" name="platform" value="Instagram"><span>Instagram</span></label><label><input type="radio" name="platform" value="WhatsApp"><span>WhatsApp</span></label><label><input type="radio" name="platform" value="X"><span>X</span></label><label><input type="radio" name="platform" value="YouTube"><span>YouTube</span></label><label><input type="radio" name="platform" value="Facebook"><span>Facebook</span></label><label><input type="radio" name="platform" value="Website"><span>موقع إلكتروني</span></label><label><input type="radio" name="platform" value="Other"><span>أخرى</span></label>
+  </div>
+  <label class="form-label" for="submission-url">رابط المصدر <small>(اختياري)</small></label><input class="news-form-input" id="submission-url" name="source_url" type="url" placeholder="https://...">
+  <label class="form-label" for="submission-image">إرفاق صورة <small>(اختياري)</small></label><input class="news-form-input file-input" id="submission-image" name="image" type="file" accept="image/*">
+  <button class="submit-news-button" type="submit">إرسال الادعاء</button><p id="submission-feedback" class="submission-feedback">سيتم إرسال البلاغ للمراجعة. لا ترفق معلومات شخصية أو طبية خاصة.</p>
+ </form></div></section>
 
     <section id="page-plans" class="page"><div class="inner-page"><div class="page-intro"><span class="eyebrow">عضويتك في نبيه</span><h1>اختر العضوية المناسبة لك</h1><p>ابدأ مجانًا، ويمكنك الانتقال إلى مزايا أوسع لاحقًا.</p></div><div class="plans-grid">
       <article class="plan-card"><div class="plan-icon">♧</div><span class="plan-label">للبداية</span><h2>المجانية</h2><div class="plan-price">مجانًا</div><p>للاستخدام الأساسي والتعرّف على نبيه.</p><ul><li>الوصول إلى المحتوى الصحي</li><li>ثلاث عمليات تحقق مبدئيًا</li><li>عرض المصادر المرتبطة</li></ul><button class="plan-button secondary" data-plan="المجانية">ابدأ مجانًا</button></article>
@@ -104,6 +98,6 @@
 <div id="nafath-auth-panel" class="nafath-auth-panel hidden-field"><div class="nafath-mark">نفاذ</div><p>يتطلب تسجيل الدخول عبر نفاذ تكاملًا رسميًا مع مزود الخدمة. هذه الخاصية غير مفعّلة في النسخة الحالية.</p></div><p class="login-hint" id="login-hint">لن يتم حفظ بيانات الدخول قبل ربط نظام مصادقة آمن.</p></section></div>
 
 <div id="guide-tip" class="guide-tip" aria-hidden="true"><span class="guide-tip-pointer"></span><div class="guide-tip-head"><span class="guide-tip-step" id="guide-step">1/2</span><button id="guide-skip" class="guide-skip" type="button">تخطي</button></div><h2 id="guide-title">مرحبًا بك في نبيه</h2><p id="guide-text">تعرف على هذه الصفحة قبل البدء.</p><div class="guide-tip-actions"><button id="guide-next" type="button">التالي</button></div></div>
-<div id="toast" class="toast" role="status"></div>
+<div id="article-detail-modal" class="article-detail-modal" aria-hidden="true"><article class="article-detail-sheet"><button id="close-article-detail" class="detail-close" aria-label="إغلاق">×</button><div id="article-detail-content"></div></article></div><div id="toast" class="toast" role="status"></div>
 <script src="app.js"></script>
 </body></html>
