@@ -2,6 +2,7 @@ const API_BASE = "";
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 let allArticles = [];
+let activeNewsFilter = "all";
 let savedIds = JSON.parse(localStorage.getItem("nabeeh_saved") || "[]");
 let currentPage = "home";
 let authMode = "login";
@@ -106,10 +107,56 @@ window.addEventListener("resize",()=>{if(activeTour.length)renderGuideStep();});
 function escapeHTML(value="") {
   return String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char]));
 }
+function articleCategory(article) {
+  const text=(String(article.title||"")+" "+String(article.content||"")+" "+String(article.category||"")).toLowerCase();
+  if(/دواء|أدوية|علاج|لقاح|مضاد حيوي|medicine|drug|medication|vaccine/.test(text)) return "medicines";
+  if(/غذاء|تغذية|طعام|وجبة|سعرات|حمية|فيتامين|nutrition|food|diet/.test(text)) return "nutrition";
+  if(/رياضة|مشي|تمارين|لياقة|نشاط بدني|fitness|exercise|walking/.test(text)) return "fitness";
+  if(/خبر|بيان|إعلان|وزارة|الصحة العامة|public health/.test(text)) return "news";
+  return "general";
+}
 function renderArticleCard(article) {
   const saved=savedIds.includes(Number(article.id));
-  return `<article class="article-card"><div class="article-top"><span class="article-tag">${escapeHTML(article.category||"معلومة صحية")}</span><button class="save-btn ${saved?"saved":""}" data-save="${article.id}" aria-label="حفظ المقال">${saved?"♥":"♡"}</button></div><h3>${escapeHTML(article.title||"مادة صحية")}</h3><p class="article-excerpt">${escapeHTML(String(article.content||"").slice(0,145))}…</p><div class="article-bottom"><span class="article-source">مصدر صحي</span><button class="read-link" data-open="${article.id}">اقرأ المزيد ←</button></div></article>`;
+  const category=articleCategory(article);
+  const labels={medicines:"الأدوية",nutrition:"التغذية",fitness:"اللياقة",news:"الأخبار",general:"الصحة العامة"};
+  const excerpt=String(article.content||"").replace(/\\s+/g," ").slice(0,175);
+  return `<article class="news-card">
+    <div class="news-card-visual ${category}"><span>${category==="medicines"?"✚":category==="nutrition"?"❋":category==="fitness"?"↗":"✦"}</span><small>نبيه · معلومة موثوقة</small></div>
+    <div class="news-card-body"><div class="news-card-meta"><span class="news-category">${labels[category]}</span><button class="save-btn ${saved?"saved":""}" data-save="${article.id}" aria-label="حفظ المادة">${saved?"♥":"♡"}</button></div>
+    <h3>${escapeHTML(article.title||"مادة صحية")}</h3><p class="news-card-excerpt">${escapeHTML(excerpt)}${excerpt.length>=175?"…":""}</p>
+    <div class="news-card-footer"><span>${escapeHTML(article.source_name||"وزارة الصحة")}</span><button class="read-link" data-open="${article.id}">اقرأ التفاصيل ←</button></div></div></article>`;
 }
+function renderArticles() {
+ const grid=$("#articles-grid");if(!grid)return;
+ const filtered=allArticles.filter(a=>activeNewsFilter==="all"||articleCategory(a)===activeNewsFilter);
+ $("#articles-count").textContent=filtered.length+" مادة";
+ grid.innerHTML=filtered.length?filtered.slice(0,30).map(renderArticleCard).join(""):'<div class="loading-card">لا توجد مواد في هذا التصنيف حاليًا.</div>';
+ bindArticleActions();
+}
+async function loadArticles() {
+ try {
+  const response=await fetch(API_BASE+"/articles");if(!response.ok)throw new Error("API unavailable");
+  allArticles=await response.json();renderArticles();
+ } catch(error){console.warn("Nabeeh articles:",error);$("#articles-grid").innerHTML='<div class="loading-card">تعذر تحميل المواد. تأكد من تشغيل الخادم وتحديث قاعدة البيانات.</div>';}
+}
+async function openArticle(id) {
+ const article=allArticles.find(item=>Number(item.id)===id);if(!article)return;
+ const modal=$("#article-detail-modal"),box=$("#article-detail-content");
+ const category=articleCategory(article);
+ const labels={medicines:"الأدوية",nutrition:"التغذية",fitness:"اللياقة",news:"الأخبار",general:"الصحة العامة"};
+ box.innerHTML=`<div class="detail-hero ${category}"><span>✦</span><small>${labels[category]}</small></div>
+ <div class="detail-body"><span class="eyebrow">من مصادر نبيه الصحية</span><h1>${escapeHTML(article.title||"مادة صحية")}</h1>
+ <div class="detail-source-note">مادة من ${escapeHTML(article.source_name||"مصدر صحي")}. هذه مادة توعوية وليست نتيجة تحقق من ادعاء.</div>
+ <h3>المحتوى</h3><p class="detail-content-text">${escapeHTML(article.content||"لم يتوفر نص مستخرج من الصفحة.")}</p>
+ <h3>المصدر</h3><a class="detail-source-link" href="${escapeHTML(article.url)}" target="_blank" rel="noopener noreferrer">فتح المصدر الأصلي ↗</a>
+ <div class="detail-actions"><button data-detail-save="${article.id}" class="detail-save">${savedIds.includes(id)?"♥ محفوظ":"♡ حفظ"}</button><button id="detail-close-bottom" class="detail-close-bottom">إغلاق</button></div></div>`;
+ modal.classList.add("open");modal.setAttribute("aria-hidden","false");
+ $("#close-article-detail").onclick=closeArticleDetail;
+ $("#detail-close-bottom").onclick=closeArticleDetail;
+ box.querySelector("[data-detail-save]").onclick=()=>{savedIds=savedIds.includes(id)?savedIds.filter(x=>x!==id):[...savedIds,id];localStorage.setItem("nabeeh_saved",JSON.stringify(savedIds));openArticle(id);renderArticles();};
+}
+function closeArticleDetail(){const modal=$("#article-detail-modal");modal.classList.remove("open");modal.setAttribute("aria-hidden","true");}
+$("#article-detail-modal").addEventListener("click",e=>{if(e.target.id==="article-detail-modal")closeArticleDetail();});
 function bindArticleActions() {
   $$("[data-save]").forEach(btn=>btn.addEventListener("click",()=>{
     const id=Number(btn.dataset.save);
@@ -200,15 +247,10 @@ $("#claim-input").addEventListener("keydown",event=>{
   if(event.key==="Enter"&&!event.shiftKey){event.preventDefault();$("#check-claim").click();}
 });
 
-$$("[data-trend-filter]").forEach(button=>button.addEventListener("click",()=>{
-  $$("[data-trend-filter]").forEach(b=>b.classList.toggle("active",b===button));
-  const filter=button.dataset.trendFilter;
-  $$(".trend-card").forEach((card,index)=>{
-    const category=["nutrition","nutrition","fitness"][index]||"rumors";
-    card.style.display=filter==="all"||filter===category?"flex":"none";
-  });
+$$("[data-news-filter]").forEach(button=>button.addEventListener("click",()=>{
+ $$("[data-news-filter]").forEach(b=>b.classList.toggle("active",b===button));
+ activeNewsFilter=button.dataset.newsFilter;renderArticles();
 }));
-
 // Account form is a UI prototype only; never store passwords or Nafath credentials in the browser.
 $("#open-login").addEventListener("click",()=>{
   $("#login-modal").classList.add("open");
