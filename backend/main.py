@@ -33,14 +33,17 @@ def get_articles():
     try:
         articles = connection.execute("""
             SELECT
-                id,
-                title,
-                category,
-                language,
-                published_at,
-                url,
-                status
-            FROM articles
+                a.id,
+                a.title,
+                a.content,
+                a.category,
+                a.language,
+                a.published_at,
+                a.url,
+                a.status,
+                s.name AS source_name
+            FROM articles AS a
+            LEFT JOIN sources AS s ON s.id = a.source_id
             WHERE content IS NOT NULL
             AND length(trim(content)) > 50
             ORDER BY id DESC
