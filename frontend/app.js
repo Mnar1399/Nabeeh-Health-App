@@ -281,6 +281,31 @@ $("#login-form").addEventListener("submit",e=>{
   e.preventDefault();
   $("#login-hint").textContent="هذه واجهة تجريبية فقط. لم يتم إنشاء حساب أو إرسال بيانات. سنربطها بخدمة مصادقة آمنة قبل حفظ أي معلومات.";
 });
+$("#submit-news-form").addEventListener("submit",async event=>{
+ event.preventDefault();
+ const form=event.currentTarget;
+ const claim=$("#submission-claim").value.trim();
+ const platform=form.querySelector('input[name="platform"]:checked')?.value;
+ const sourceUrl=$("#submission-url").value.trim();
+ const file=$("#submission-image").files[0];
+ const feedback=$("#submission-feedback");
+ if(!claim||!platform){feedback.textContent="يرجى كتابة الادعاء واختيار مكان ظهوره.";return;}
+ let imageData=null;
+ if(file){
+  if(file.size>2*1024*1024){feedback.textContent="حجم الصورة يجب ألا يتجاوز 2 ميجابايت.";return;}
+  imageData=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file);});
+ }
+ const button=form.querySelector(".submit-news-button");
+ button.disabled=true;button.textContent="جارٍ إرسال البلاغ...";
+ try{
+  const response=await fetch(API_BASE+"/submissions",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({claim,platform,source_url:sourceUrl||null,image_data:imageData})});
+  if(!response.ok)throw new Error("تعذر حفظ البلاغ");
+  const result=await response.json();
+  feedback.textContent="تم استلام بلاغك بنجاح. رقم البلاغ: "+result.id+" — الحالة: بانتظار المراجعة.";
+  form.reset();showToast("تم إرسال البلاغ إلى نبيه");
+ }catch(error){feedback.textContent="تعذر إرسال البلاغ. تأكد من تشغيل الخادم ثم حاول مرة أخرى.";}
+ finally{button.disabled=false;button.textContent="إرسال الادعاء";}
+});
 $("#nafath-button").addEventListener("click",()=>showToast("تسجيل نفاذ يتطلب موافقة وتكاملًا رسميًا، ولم يتم تفعيله."));
 $("#nafath-button") && $("#nafath-button").addEventListener("click",()=>{});
 $("#health-profile-form").addEventListener("submit",e=>{
