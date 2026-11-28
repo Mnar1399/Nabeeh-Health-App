@@ -271,7 +271,7 @@ def gemini_chat_answer(message, articles):
 
         lines = output.splitlines()
         source_line = lines[0].strip() if lines else ""
-        answer = "\\n".join(lines[1:]).strip() if source_line.upper().startswith("SOURCE:") else output
+        answer = "\n".join(lines[1:]).strip() if source_line.upper().startswith("SOURCE:") else output
         # Remove an occasional stray "N" marker emitted at the start of a model bullet.
         answer = re.sub(r"(?m)^\\s*[-–—]\\s*N\\s*", "", answer)
         answer = re.sub(r"(?m)^\\s*N\\s*[-–—:]\\s*", "", answer)
@@ -280,7 +280,7 @@ def gemini_chat_answer(message, articles):
             if source_value.isdigit():
                 index = int(source_value) - 1
                 if 0 <= index < len(articles) and articles[index]["url"]:
-                    answer += f"\\nالمصدر: {articles[index]['url']}"
+                    answer += f"\nالمصدر: {articles[index]['url']}"
         return answer or "ما قدرت أجهّز إجابة الآن. حاولي مرة ثانية بعد قليل."
     except Exception:
         return "تعذّر الاتصال بالمساعد الذكي حاليًا. تأكدي من الاتصال بالإنترنت ومفتاح Gemini ثم حاولي مرة ثانية."
