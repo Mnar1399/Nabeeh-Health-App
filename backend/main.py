@@ -203,10 +203,88 @@ def short_article_answer(message, articles):
         answer += f"\\nالمصدر: {article['url']}"
     return answer
 
+def relevant_chat_articles(message, articles, limit=3):
+    query_words = [w for w in normalize_arabic(message).split()
+                   if len(w) > 1 and w not in CHAT_STOPWORDS]
+    query_forms = set()
+    for word in query_words:
+        query_forms.update(arabic_word_forms(word))
+    if not query_forms:
+        return []
+
+    ranked = []
+    for article in articles:
+        title_forms = expanded_words(article["title"])
+        body_forms = expanded_words(article["content"])
+        title_overlap = len(query_forms & title_forms)
+        body_overlap = len(query_forms & body_forms)
+        # Require a meaningful match so unrelated articles are never sent as evidence.
+        if title_overlap >= 1 or body_overlap >= 2:
+            score = title_overlap * 5 + body_overlap
+            ranked.append((score, article))
+    ranked.sort(key=lambda item: item[0], reverse=True)
+    return [article for _, article in ranked[:limit]]
+
+
+def gemini_chat_answer(message, articles):
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return "المساعد الذكي غير مفعّل بعد. أضيفي مفتاح Gemini في ملف .env لتشغيله."
+
+    try:
+        from google import genai
+        client = genai.Client(api_key=api_key)
+        evidence = []
+        for index, article in enumerate(articles, start=1):
+            evidence.append(
+                f"[{index}] العنوان: {article['title']}\\n"
+                f"المحتوى: {article['content'][:4500]}\\n"
+                f"الرابط: {article['url'] or 'غير متوفر'}"
+            )
+        evidence_text = "\\n\\n".join(evidence) if evidence else "لا توجد مقالات ذات صلة بالسؤال في قاعدة البيانات."
+        prompt = f"""أنت مساعد نبيه الصحي. أجب باللغة العربية وبأسلوب بسيط ومختصر يفهمه عامة الناس.
+سؤال المستخدم: {message}
+
+مقالات قاعدة البيانات:
+{evidence_text}
+
+التعليمات:
+- افحص هل أحد المقالات يتناول السؤال نفسه مباشرة، وليس مجرد تشابه كلمات.
+- إذا وجدت مقالاً يجيب عن السؤال، لخّص المعلومة منه بدقة ولا تضف ادعاءات طبية غير موجودة فيه.
+- إذا لم يوجد مقال يجيب عن السؤال مباشرة، أجب من معرفتك الطبية العامة بإجابة تثق بها، باختصار، ولا تنسبها إلى أي مقال.
+- لا تخترع مصادر أو روابط أو أرقامًا مرجعية.
+- إذا كان السؤال يتطلب تشخيصًا أو جرعة دواء أو حالة طارئة، وضّح أن المستخدم يحتاج إلى مختص أو رعاية عاجلة حسب الحالة.
+- لا تتجاوز 3 جمل قصيرة.
+- اكتب أول سطر فقط بصيغة SOURCE: رقم المقال الذي استخدمته (مثلاً SOURCE: 1)، أو SOURCE: NONE إذا كانت الإجابة من المعرفة العامة.
+- بعد ذلك اكتب الإجابة فقط، دون عناوين إضافية."""
+
+        response = client.models.generate_content(
+            model="gemini-3.1-flash-lite",
+            contents=prompt,
+            config={"temperature": 0.2, "max_output_tokens": 300},
+        )
+        output = (response.text or "").strip()
+        if not output:
+            return "ما قدرت أجهّز إجابة الآن. حاولي مرة ثانية بعد قليل."
+
+        lines = output.splitlines()
+        source_line = lines[0].strip() if lines else ""
+        answer = "\\n".join(lines[1:]).strip() if source_line.upper().startswith("SOURCE:") else output
+        if source_line.upper().startswith("SOURCE:"):
+            source_value = source_line.split(":", 1)[1].strip()
+            if source_value.isdigit():
+                index = int(source_value) - 1
+                if 0 <= index < len(articles) and articles[index]["url"]:
+                    answer += f"\\nالمصدر: {articles[index]['url']}"
+        return answer or "ما قدرت أجهّز إجابة الآن. حاولي مرة ثانية بعد قليل."
+    except Exception:
+        return "تعذّر الاتصال بالمساعد الذكي حاليًا. تأكدي من الاتصال بالإنترنت ومفتاح Gemini ثم حاولي مرة ثانية."
+
+
 @app.post("/api/chat")
 def chat(x:Chat):
-    articles = article_rows()
-    return {"answer": short_article_answer(x.message, articles)}
+    articles = relevant_chat_articles(x.message, article_rows())
+    return {"answer": gemini_chat_answer(x.message, articles)}
 
 @app.get("/api/profile")
 def profile(req:Request):
