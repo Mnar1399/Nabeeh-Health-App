@@ -272,6 +272,9 @@ def gemini_chat_answer(message, articles):
         lines = output.splitlines()
         source_line = lines[0].strip() if lines else ""
         answer = "\\n".join(lines[1:]).strip() if source_line.upper().startswith("SOURCE:") else output
+        # Remove an occasional stray "N" marker emitted at the start of a model bullet.
+        answer = re.sub(r"(?m)^\\s*[-–—]\\s*N\\s*", "", answer)
+        answer = re.sub(r"(?m)^\\s*N\\s*[-–—:]\\s*", "", answer)
         if source_line.upper().startswith("SOURCE:"):
             source_value = source_line.split(":", 1)[1].strip()
             if source_value.isdigit():
