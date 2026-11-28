@@ -1,13 +1,9 @@
-import os, sqlite3, hashlib, secrets
+import os, sqlite3, hashlib, secrets, re, unicodedata
 from pathlib import Path
 from fastapi import FastAPI, Request, Response, HTTPException, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, EmailStr, Field
-import requests
-from dotenv import load_dotenv
-
-load_dotenv()
 ROOT=Path(__file__).resolve().parent.parent
 DB=ROOT/"data"/"nabeeh_prototype.db"
 app=FastAPI(title="Nabeeh Web Prototype")
@@ -89,17 +85,105 @@ def submit(claim:str=Form(...),platform:str=Form(...),source_url:str=Form("")):
     c=conn();cur=c.execute("INSERT INTO submissions(claim,platform,source_url) VALUES(?,?,?)",(claim,platform,source_url));c.commit();rid=cur.lastrowid;c.close()
     return {"id":rid,"message":"تم استلام الادعاء وحفظه في النموذج التجريبي. إعداد البريد مطلوب لإرسال إشعار."}
 class Chat(BaseModel): message:str=Field(min_length=2,max_length=3000)
+def normalize_arabic(value):
+    value = unicodedata.normalize("NFKC", str(value or "")).lower()
+    value = re.sub(r"[\u064B-\u065F\u0670ـ]", "", value)
+    value = re.sub(r"[إأآٱ]", "ا", value).replace("ى", "ي").replace("ة", "ه")
+    return re.sub(r"[^\w\s]", " ", value)
+
+CHAT_STOPWORDS = set("""
+من في على عن الى الي ان أن أو او و ف ب ك ال هذا هذه ذلك تلك هو هي هل ما ماذا كيف
+متى لماذا مع عند بعد قبل كان تكون يكون تم التي الذي اللتي اذا إذا كل بعض اي أي
+لي ليش وش كم هل يمكن ممكن اريد أبي ابغى ابي مقال مقالات معلومة معلومات صحيه
+الصحيه الصحة المقال المقاله المقالة نبيه
+""".split())
+
+def article_rows():
+    # Read article sources without changing either database.
+    candidates = [DB, ROOT / "data" / "nabeeh.db"]
+    found = []
+    seen = set()
+    for path in candidates:
+        if not path.exists():
+            continue
+        try:
+            c = sqlite3.connect(f"file:{path.as_posix()}?mode=ro", uri=True, timeout=2)
+            c.row_factory = sqlite3.Row
+            tables = [r["name"] for r in c.execute(
+                "SELECT name FROM sqlite_master WHERE type='table'"
+            )]
+            for table in ("moh_articles", "articles"):
+                if table not in tables:
+                    continue
+                columns = [r["name"] for r in c.execute(f'PRAGMA table_info("{table}")')]
+                title_col = next((x for x in ("title", "name", "headline") if x in columns), None)
+                text_col = next((x for x in ("content", "body", "text", "article_text", "summary", "description") if x in columns), None)
+                url_col = next((x for x in ("url", "source_url", "link") if x in columns), None)
+                if not title_col or not text_col:
+                    continue
+                query = f'SELECT "{title_col}" AS title, "{text_col}" AS content'
+                query += f', "{url_col}" AS url' if url_col else ', NULL AS url'
+                query += f' FROM "{table}" ORDER BY id DESC LIMIT 500' if "id" in columns else f' FROM "{table}" LIMIT 500'
+                for row in c.execute(query).fetchall():
+                    title, content, url = row["title"], row["content"], row["url"]
+                    if not title or not content:
+                        continue
+                    key = (str(title).strip(), str(url or "").strip())
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    clean = re.sub(r"<[^>]+>", " ", str(content))
+                    clean = re.sub(r"\s+", " ", clean).strip()
+                    found.append({"title": str(title).strip(), "content": clean, "url": str(url or "").strip()})
+            c.close()
+        except (sqlite3.Error, OSError):
+            continue
+    return found
+
+def short_article_answer(message, articles):
+    words = [w for w in normalize_arabic(message).split()
+             if len(w) > 1 and w not in CHAT_STOPWORDS]
+    if not articles:
+        return "قاعدة البيانات ما فيها مقالات صحية جاهزة للقراءة حتى الآن. أضيفوا مقالات وزارة الصحة أولًا، وبعدها أقدر أجاوب منها."
+
+    scored = []
+    for article in articles:
+        title_words = set(normalize_arabic(article["title"]).split())
+        body_words = set(normalize_arabic(article["content"]).split())
+        score = sum(3 for w in words if w in title_words) + sum(1 for w in words if w in body_words)
+        if score:
+            scored.append((score, article))
+    if not scored:
+        return "ما لقيت في قاعدة البيانات مقالًا يطابق سؤالك بشكل واضح. جرّب تكتب اسم الموضوع أو عنوان المقال."
+
+    scored.sort(key=lambda item: item[0], reverse=True)
+    best_score, article = scored[0]
+    sentences = [s.strip() for s in re.split(r"(?<=[.!؟])\s+|(?<=[؛])\s*", article["content"]) if len(s.strip()) > 25]
+    query_terms = set(words)
+    ranked_sentences = []
+    for sentence in sentences:
+        sentence_words = set(normalize_arabic(sentence).split())
+        overlap = len(query_terms & sentence_words)
+        ranked_sentences.append((overlap, sentence))
+    ranked_sentences.sort(key=lambda item: item[0], reverse=True)
+    chosen = [s for overlap, s in ranked_sentences if overlap > 0][:2]
+    if not chosen:
+        chosen = sentences[:2]
+    if not chosen:
+        chosen = [article["content"][:280]]
+    answer = " ".join(chosen)
+    if len(answer) > 420:
+        answer = answer[:417].rsplit(" ", 1)[0] + "..."
+    answer = f"بحسب مقال «{article['title']}»: {answer}"
+    if article["url"]:
+        answer += f"\nالمصدر: {article['url']}"
+    return answer
+
 @app.post("/api/chat")
 def chat(x:Chat):
-    key=os.getenv("OPENAI_API_KEY")
-    if not key:raise HTTPException(503,"أضيفي مفتاح OpenAI في .env")
-    c=conn();rows=c.execute("SELECT title,content,url FROM moh_articles ORDER BY id DESC LIMIT 10").fetchall();c.close()
-    context="\n".join(f"{r['title']}\n{r['content'][:3000]}\n{r['url']}" for r in rows)
-    if not context:context="قاعدة مقالات وزارة الصحة غير جاهزة. أخبر المستخدم أن المعلومات المتاحة غير كافية ولا تخمّن."
-    prompt="أنت مساعد نبيه الصحي. أجب بلغة المستخدم اعتمادًا فقط على النصوص التالية. إذا لم تكف الأدلة فقل ذلك. لا تشخّص ولا تخترع مصادر.\n"+context
-    r=requests.post("https://api.openai.com/v1/chat/completions",headers={"Authorization":"Bearer "+key},json={"model":os.getenv("OPENAI_MODEL","gpt-4o-mini"),"messages":[{"role":"system","content":prompt},{"role":"user","content":x.message}],"temperature":0.2},timeout=60)
-    if r.status_code>=400:raise HTTPException(502,"تعذر الاتصال بـ OpenAI")
-    return {"answer":r.json()["choices"][0]["message"]["content"]}
+    articles = article_rows()
+    return {"answer": short_article_answer(x.message, articles)}
+
 @app.get("/api/profile")
 def profile(req:Request):
     u=who(req)
