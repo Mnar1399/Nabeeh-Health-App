@@ -1,1 +1,2 @@
 fastapi\nuvicorn[standard]\nrequests\npython-dotenv\npython-multipart\nemail-validator\n
+google-genai
