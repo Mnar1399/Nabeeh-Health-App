@@ -16,7 +16,7 @@ $("#emailshow").textContent=me?.email||"سجّل الدخول لعرض بريد�
 $("#logout").classList.toggle("hide",!me);
 items=await(await fetch("/api/articles")).json();render();
 }
-function card(a){return `<article class="card"><div class="cover ${a.category}">${a.icon}<small>✓ تم التحقق منه</small></div><div class="cardbody"><span class="tag">${a.label}</span><button class="save" data-save="${a.id}">♡</button><h3>${a.title}</h3><p>${a.claim}</p><div class="cardfoot"><small>${a.date}</small><button class="textbtn" data-open="${a.id}">اقرأ التفاصيل ←</button></div></div></article>`;}
+function card(a){let summary=a.claim.length>145?a.claim.slice(0,145).trim()+"…":a.claim;return `<article class="card"><div class="cover ${a.category}">${a.icon}<small>✓ ${a.verdict}</small></div><div class="cardbody"><span class="tag">${a.label}</span><button class="save" data-save="${a.id}">♡</button><h3>${a.title}</h3><p>${summary}</p><div class="cardfoot"><small>${a.date}</small><button class="textbtn" data-open="${a.id}">اقرأ التفاصيل ←</button></div></div></article>`;}
 function render(){let f=$(".filters .on")?.dataset.filter||"all";$("#news").innerHTML=items.filter(a=>f==="all"||a.category===f).map(card).join("");bind();}
 function bind(){$$("[data-open]").forEach(b=>b.onclick=()=>detail(b.dataset.open));$$("[data-save]").forEach(b=>b.onclick=()=>save(b.dataset.save));}
 $$("[data-filter]").forEach(b=>b.onclick=()=>{$$(".filters button").forEach(x=>x.classList.toggle("on",x===b));render();});
