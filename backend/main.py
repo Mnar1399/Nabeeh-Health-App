@@ -181,7 +181,7 @@ def short_article_answer(message, articles):
 
     scored.sort(key=lambda item: (item[0], item[1], item[2]), reverse=True)
     _, title_overlap, body_overlap, article = scored[0]
-    if title_overlap == 0 and body_overlap == 0:
+    if title_overlap == 0 and body_overlap < 2:
         return "هذه المعلومة غير موجودة في قاعدة البيانات الحالية."
 
     sentences = [part.strip() for part in re.split(r"(?<=[.!؟])\\s+|(?<=[؛])\\s*", article["content"]) if len(part.strip()) > 25]
