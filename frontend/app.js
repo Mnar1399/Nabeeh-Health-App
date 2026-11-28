@@ -37,13 +37,20 @@ $("#logout").classList.add("hide");
 $("#health").reset();
 }
 $("#logout").onclick=signOut;
-$("#useremail").onclick=()=>{
+$("#useremail").onclick=(e)=>{
+e.stopPropagation();
 const menu=$("#headerlogout");
 const willOpen=menu.classList.contains("hide");
 menu.classList.toggle("hide",!willOpen);
 $("#useremail").setAttribute("aria-expanded",String(willOpen));
 };
 $("#headerlogout").onclick=signOut;
+document.addEventListener("click",e=>{
+if(!e.target.closest(".actions")){
+$("#headerlogout").classList.add("hide");
+$("#useremail").setAttribute("aria-expanded","false");
+}
+});
 $("#report").onsubmit=async e=>{e.preventDefault();let r=await fetch("/api/submissions",{method:"POST",body:new FormData(e.target)}),d=await r.json();$("#reportstatus").textContent=r.ok?"تم استلام الادعاء.":(d.detail||"تعذر إرسال الادعاء.");if(r.ok)e.target.reset();};
 $("#chatform").onsubmit=async e=>{e.preventDefault();let m=$("#chattext").value.trim();if(!m)return;let p=document.createElement("p");p.className="you";p.textContent=m;$("#messages").append(p);$("#chattext").value="";let q=document.createElement("p");q.className="bot";q.textContent="نبيه يراجع المعلومات...";$("#messages").append(q);let r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m})}),d=await r.json();q.textContent=d.answer||d.detail;};
 async function loadProfile(){if(!me)return;let d=await(await fetch("/api/profile")).json();for(let [k,v] of Object.entries(d.health||{}))if($("#health").elements[k])$("#health").elements[k].value=v??"";}
