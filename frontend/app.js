@@ -52,7 +52,24 @@ $("#useremail").setAttribute("aria-expanded","false");
 }
 });
 $("#report").onsubmit=async e=>{e.preventDefault();let r=await fetch("/api/submissions",{method:"POST",body:new FormData(e.target)}),d=await r.json();$("#reportstatus").textContent=r.ok?"تم استلام الادعاء.":(d.detail||"تعذر إرسال الادعاء.");if(r.ok)e.target.reset();};
-$("#chatform").onsubmit=async e=>{e.preventDefault();let m=$("#chattext").value.trim();if(!m)return;let p=document.createElement("p");p.className="you";p.textContent=m;$("#messages").append(p);$("#chattext").value="";let q=document.createElement("p");q.className="bot";q.textContent="نبيه يراجع المعلومات...";$("#messages").append(q);let r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m})}),d=await r.json();q.textContent=d.answer||d.detail;};
+function displayChatAnswer(node, raw){
+  const text=String(raw||"").replace(/\\n/g,"\n").replace(/\r\n/g,"\n").replace(/\[(https?:\/\/[^\]]+)\]\((https?:\/\/[^)]+)\)/g,"$1");
+  node.replaceChildren();
+  const urlPattern=/https?:\/\/[^\s<>"')\]]+/g;
+  let last=0,match;
+  while((match=urlPattern.exec(text))!==null){
+    node.append(document.createTextNode(text.slice(last,match.index)));
+    const link=document.createElement("a");
+    link.href=match[0];
+    link.textContent=match[0];
+    link.target="_blank";
+    link.rel="noopener noreferrer";
+    node.append(link);
+    last=urlPattern.lastIndex;
+  }
+  node.append(document.createTextNode(text.slice(last)));
+}
+$("#chatform").onsubmit=async e=>{e.preventDefault();let m=$("#chattext").value.trim();if(!m)return;let p=document.createElement("p");p.className="you";p.textContent=m;$("#messages").append(p);$("#chattext").value="";let q=document.createElement("p");q.className="bot";q.textContent="نبيه يراجع المعلومات...";$("#messages").append(q);let r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m})}),d=await r.json();displayChatAnswer(q,d.answer||d.detail);};
 async function loadProfile(){if(!me)return;let d=await(await fetch("/api/profile")).json();for(let [k,v] of Object.entries(d.health||{}))if($("#health").elements[k])$("#health").elements[k].value=v??"";}
 $("#health").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),q=new URLSearchParams(f);let r=await fetch("/api/profile?"+q,{method:"PUT"});$("#healthstatus").textContent=r.ok?"تم الحفظ":"سجّل الدخول أولًا";};
 $("#lang").onclick=()=>{document.documentElement.lang=document.documentElement.lang==="ar"?"en":"ar";document.documentElement.dir=document.documentElement.lang==="ar"?"rtl":"ltr";$("#lang").textContent=document.documentElement.lang==="ar"?"EN":"عربي";};
