@@ -93,7 +93,7 @@ def normalize_arabic(value):
 
 CHAT_STOPWORDS = set("""
 من في على عن الى الي ان أن أو او و ف ب ك ال هذا هذه ذلك تلك هو هي هل ما ماذا كيف
-متى لماذا مع عند بعد قبل كان تكون يكون تم التي الذي اللتي اذا إذا كل بعض اي أي
+متى لماذا مع عند بعد قبل كان تكون يكون تم التي الذي اللتي اذا إذا كل بعض اي أي ماهو وشو
 لي ليش وش كم هل يمكن ممكن اريد أبي ابغى ابي مقال مقالات معلومة معلومات صحيه
 الصحيه الصحة المقال المقاله المقالة نبيه
 """.split())
@@ -117,7 +117,7 @@ def article_rows():
                     continue
                 columns = [r["name"] for r in c.execute(f'PRAGMA table_info("{table}")')]
                 title_col = next((x for x in ("title", "name", "headline") if x in columns), None)
-                text_col = next((x for x in ("content", "body", "text", "article_text", "summary", "description") if x in columns), None)
+                text_col = next((x for x in ("content", "body", "text", "article_text", "article_content", "article_body", "full_text", "extracted_text", "summary", "description") if x in columns), None)
                 url_col = next((x for x in ("url", "source_url", "link") if x in columns), None)
                 if not title_col or not text_col:
                     continue
@@ -140,42 +140,57 @@ def article_rows():
             continue
     return found
 
+def arabic_word_forms(word):
+    forms = {word}
+    for prefix in ("وال", "بال", "كال", "فال", "لل", "ال", "و", "ف", "ب", "ك", "ل"):
+        if word.startswith(prefix) and len(word) - len(prefix) >= 3:
+            forms.add(word[len(prefix):])
+    for form in list(forms):
+        if form.startswith("ات") and len(form) >= 5:
+            forms.add(form[2:])
+    return forms
+
+def expanded_words(text):
+    tokens = normalize_arabic(text).split()
+    result = set()
+    for token in tokens:
+        if len(token) > 1:
+            result.update(arabic_word_forms(token))
+    return result
+
 def short_article_answer(message, articles):
-    words = [w for w in normalize_arabic(message).split()
-             if len(w) > 1 and w not in CHAT_STOPWORDS]
+    query_words = [w for w in normalize_arabic(message).split()
+                   if len(w) > 1 and w not in CHAT_STOPWORDS]
+    query_forms = set()
+    for word in query_words:
+        query_forms.update(arabic_word_forms(word))
     if not articles:
-        return "قاعدة البيانات ما فيها مقالات صحية جاهزة للقراءة حتى الآن. أضيفوا مقالات وزارة الصحة أولًا، وبعدها أقدر أجاوب منها."
+        return "هذه المعلومة غير موجودة في قاعدة البيانات الحالية."
 
     scored = []
     for article in articles:
-        title_words = set(normalize_arabic(article["title"]).split())
-        body_words = set(normalize_arabic(article["content"]).split())
-        score = sum(3 for w in words if w in title_words) + sum(1 for w in words if w in body_words)
+        title_forms = expanded_words(article["title"])
+        body_forms = expanded_words(article["content"])
+        title_overlap = len(query_forms & title_forms)
+        body_overlap = len(query_forms & body_forms)
+        score = title_overlap * 4 + body_overlap
         if score:
-            scored.append((score, article))
+            scored.append((score, title_overlap, body_overlap, article))
     if not scored:
         return "هذه المعلومة غير موجودة في قاعدة البيانات الحالية."
 
-    # Require a meaningful match; never answer from a loosely related article.
-    scored.sort(key=lambda item: item[0], reverse=True)
-    best_score, article = scored[0]
-    title_words = set(normalize_arabic(article["title"]).split())
-    body_words = set(normalize_arabic(article["content"]).split())
-    title_overlap = len(set(words) & title_words)
-    body_overlap = len(set(words) & body_words)
-    minimum_body_overlap = max(2, (len(set(words)) + 2) // 3)
-    if title_overlap == 0 and body_overlap < minimum_body_overlap:
+    scored.sort(key=lambda item: (item[0], item[1], item[2]), reverse=True)
+    _, title_overlap, body_overlap, article = scored[0]
+    if title_overlap == 0 and body_overlap == 0:
         return "هذه المعلومة غير موجودة في قاعدة البيانات الحالية."
 
-    sentences = [s.strip() for s in re.split(r"(?<=[.!؟])\s+|(?<=[؛])\s*", article["content"]) if len(s.strip()) > 25]
-    query_terms = set(words)
-    ranked_sentences = []
+    sentences = [part.strip() for part in re.split(r"(?<=[.!؟])\\s+|(?<=[؛])\\s*", article["content"]) if len(part.strip()) > 25]
+    ranked = []
     for sentence in sentences:
-        sentence_words = set(normalize_arabic(sentence).split())
-        overlap = len(query_terms & sentence_words)
-        ranked_sentences.append((overlap, sentence))
-    ranked_sentences.sort(key=lambda item: item[0], reverse=True)
-    chosen = [s for overlap, s in ranked_sentences if overlap > 0][:2]
+        overlap = len(query_forms & expanded_words(sentence))
+        ranked.append((overlap, sentence))
+    ranked.sort(key=lambda item: item[0], reverse=True)
+    chosen = [sentence for overlap, sentence in ranked if overlap > 0][:2]
     if not chosen:
         chosen = sentences[:2]
     if not chosen:
@@ -185,7 +200,7 @@ def short_article_answer(message, articles):
         answer = answer[:417].rsplit(" ", 1)[0] + "..."
     answer = f"بحسب مقال «{article['title']}»: {answer}"
     if article["url"]:
-        answer += f"\nالمصدر: {article['url']}"
+        answer += f"\\nالمصدر: {article['url']}"
     return answer
 
 @app.post("/api/chat")
