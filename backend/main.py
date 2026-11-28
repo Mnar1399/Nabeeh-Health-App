@@ -35,7 +35,7 @@ def who(req):
     return dict(r) if r else None
 def login_cookie(uid,res):
     t=secrets.token_urlsafe(32);c=conn();c.execute("INSERT INTO sessions VALUES(?,?)",(t,uid));c.commit();c.close()
-    res.set_cookie("nabeeh_session",t,httponly=True,samesite="lax",max_age=1209600)
+    res.set_cookie("nabeeh_session",t,httponly=True,samesite="lax")
 
 @app.get("/")
 def home(): return FileResponse(ROOT/"frontend"/"index.html")
@@ -83,7 +83,7 @@ def save(aid:str,req:Request):
 @app.post("/api/submissions")
 def submit(claim:str=Form(...),platform:str=Form(...),source_url:str=Form("")):
     c=conn();cur=c.execute("INSERT INTO submissions(claim,platform,source_url) VALUES(?,?,?)",(claim,platform,source_url));c.commit();rid=cur.lastrowid;c.close()
-    return {"id":rid,"message":"تم استلام الادعاء وحفظه في النموذج التجريبي. إعداد البريد مطلوب لإرسال إشعار."}
+    return {"id":rid,"message":"تم استلام الادعاء."}
 class Chat(BaseModel): message:str=Field(min_length=2,max_length=3000)
 def normalize_arabic(value):
     value = unicodedata.normalize("NFKC", str(value or "")).lower()
@@ -154,10 +154,19 @@ def short_article_answer(message, articles):
         if score:
             scored.append((score, article))
     if not scored:
-        return "ما لقيت في قاعدة البيانات مقالًا يطابق سؤالك بشكل واضح. جرّب تكتب اسم الموضوع أو عنوان المقال."
+        return "هذه المعلومة غير موجودة في قاعدة البيانات الحالية."
 
+    # Require a meaningful match; never answer from a loosely related article.
     scored.sort(key=lambda item: item[0], reverse=True)
     best_score, article = scored[0]
+    title_words = set(normalize_arabic(article["title"]).split())
+    body_words = set(normalize_arabic(article["content"]).split())
+    title_overlap = len(set(words) & title_words)
+    body_overlap = len(set(words) & body_words)
+    minimum_body_overlap = max(2, (len(set(words)) + 2) // 3)
+    if title_overlap == 0 and body_overlap < minimum_body_overlap:
+        return "هذه المعلومة غير موجودة في قاعدة البيانات الحالية."
+
     sentences = [s.strip() for s in re.split(r"(?<=[.!؟])\s+|(?<=[؛])\s*", article["content"]) if len(s.strip()) > 25]
     query_terms = set(words)
     ranked_sentences = []
