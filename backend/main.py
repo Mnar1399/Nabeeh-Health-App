@@ -5,6 +5,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, EmailStr, Field
 ROOT=Path(__file__).resolve().parent.parent
+from dotenv import load_dotenv
+load_dotenv(ROOT / ".env")
 DB=ROOT/"data"/"nabeeh_prototype.db"
 app=FastAPI(title="Nabeeh Web Prototype")
 
