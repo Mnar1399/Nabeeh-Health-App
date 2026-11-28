@@ -25,9 +25,24 @@ async function save(id){if(!me){$("#modal").classList.remove("hide");return;}let
 async function loadSaved(){if(!me){$("#savedgrid").innerHTML="سجّل الدخول لعرض محفوظاتك.";return;}let a=await(await fetch("/api/saved")).json();$("#savedgrid").innerHTML=a.map(card).join("");bind();}
 $("#authopen").onclick=()=>$("#modal").classList.remove("hide");$("#close").onclick=()=>$("#modal").classList.add("hide");$$("[data-mode]").forEach(b=>b.onclick=()=>{mode=b.dataset.mode;$$("[data-mode]").forEach(x=>x.classList.toggle("selected",x===b));$("#authtitle").textContent=mode==="login"?"تسجيل الدخول":"إنشاء حساب";$("#authsubmit").textContent=$("#authtitle").textContent;});
 $("#auth").onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target),r=await fetch("/api/"+(mode==="login"?"login":"register"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:f.get("email"),password:f.get("password")})}),d=await r.json();if(!r.ok){$("#authstatus").textContent=d.detail;return;}$("#modal").classList.add("hide");init();};
-async function signOut(){await fetch("/api/logout",{method:"POST"});$("#headerlogout").classList.add("hide");init();}
+async function signOut(){
+await fetch("/api/logout",{method:"POST"});
+me=null;
+$("#headerlogout").classList.add("hide");
+$("#useremail").classList.add("hide");
+$("#useremail").setAttribute("aria-expanded","false");
+$("#authopen").classList.remove("hide");
+$("#emailshow").textContent="سجّل الدخول لعرض بريدك.";
+$("#logout").classList.add("hide");
+$("#health").reset();
+}
 $("#logout").onclick=signOut;
-$("#useremail").onclick=()=>{const isHidden=$("#headerlogout").classList.toggle("hide");$("#useremail").setAttribute("aria-expanded",String(!isHidden));};
+$("#useremail").onclick=()=>{
+const menu=$("#headerlogout");
+const willOpen=menu.classList.contains("hide");
+menu.classList.toggle("hide",!willOpen);
+$("#useremail").setAttribute("aria-expanded",String(willOpen));
+};
 $("#headerlogout").onclick=signOut;
 $("#report").onsubmit=async e=>{e.preventDefault();let r=await fetch("/api/submissions",{method:"POST",body:new FormData(e.target)}),d=await r.json();$("#reportstatus").textContent=r.ok?"تم استلام الادعاء.":(d.detail||"تعذر إرسال الادعاء.");if(r.ok)e.target.reset();};
 $("#chatform").onsubmit=async e=>{e.preventDefault();let m=$("#chattext").value.trim();if(!m)return;let p=document.createElement("p");p.className="you";p.textContent=m;$("#messages").append(p);$("#chattext").value="";let q=document.createElement("p");q.className="bot";q.textContent="نبيه يراجع المعلومات...";$("#messages").append(q);let r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:m})}),d=await r.json();q.textContent=d.answer||d.detail;};
